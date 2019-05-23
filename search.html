@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Window-target" content="_top">
+    <!--    <link rel="stylesheet" href="css/app.css">-->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/search.css">
+<!--    <link rel="stylesheet" href="css/index.css">-->
+    <script type="text/javascript" src="assets/zepto.min.js"></script>
+    <script type="text/javascript" src="assets/touch.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript">
+        (function (win) {
+            var remCalc = {};
+            var docEl = win.document.documentElement,
+                tid;
+
+            function refreshRem() {
+                // 获取当前窗口的宽度
+                var width = docEl.getBoundingClientRect().width;
+                // 大于640px 按640算
+                if (width > 750) {
+                    width = 750
+                }
+                // 把窗口的宽度固定分为10份 也就是10rem
+                // 按视觉稿640算  640/10=64px  那么1rem = 64px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/64 = 1.25rem
+                // 按钮的宽高固定为  1.25rem * 1.25rem
+                // 当窗口宽度缩放为 320px的时候
+                // 那么 1rem = 32px
+                // 原来 80px*80px的按钮现在变为 1.25rem * 32px = 40px
+                // 按钮变为 40px * 40px
+                // 其他宽度也类似
+                //
+                // cms做法也类似
+                // 只是我们把窗口宽度固定分为 6.4份，即6.4rem
+                // 所以 1rem = 100px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/100 = 0.8rem
+                // ....其他也差不多
+                //
+                //
+                // 对比
+                // 其实也就是计算rem的问题 视觉稿量出来的值  除64 或 100的问题
+                // 除100 总比 除64 好口算
+                // 就算用sass写个 @function px2rem代替口算
+                // .8rem 总比输入 px2rem(80)少几个字符
+                //
+                //
+                var rem = width / 10;  // cms 只要把这行改成  var rem = width /640 * 100
+                docEl.style.fontSize = rem + "px";
+                remCalc.rem = rem;
+                //误差、兼容性处理
+                var actualSize = parseFloat(window.getComputedStyle(document.documentElement)["font-size"]);
+                if (actualSize !== rem && actualSize > 0 && Math.abs(actualSize - rem) > 1) {
+                    var remScaled = rem * rem / actualSize;
+                    docEl.style.fontSize = remScaled + "px"
+                }
+            }
+
+            //函数节流，避免频繁更新
+            function dbcRefresh() {
+                clearTimeout(tid);
+                tid = setTimeout(refreshRem, 100)
+            }
+
+            //窗口更新动态改变font-size
+            win.addEventListener("resize", function () {
+                dbcRefresh()
+            }, false);
+
+            //页面显示的时候再计算一次   难道切换窗口之后再切换来窗口大小会变?....
+            win.addEventListener("pageshow", function (e) {
+                if (e.persisted) {
+                    dbcRefresh()
+                }
+            }, false);
+            refreshRem();
+            remCalc.refreshRem = refreshRem;
+            remCalc.rem2px = function (d) {
+                var val = parseFloat(d) * this.rem;
+                if (typeof d === "string" && d.match(/rem$/)) {
+                    val += "px"
+                }
+                return val
+            };
+            remCalc.px2rem = function (d) {
+                var val = parseFloat(d) / this.rem;
+                if (typeof d === "string" && d.match(/px$/)) {
+                    val += "rem"
+                }
+                return val
+            };
+            win.remCalc = remCalc
+        })(window);
+
+        // 考拉移动端全站使用rem的不是很多
+        // 主要用100%布局 比如width、height、padding
+        // 也有直接用px  字体大小使用px固定不变
+        // 还有使用em的  基于font-size 定line-height
+        // 全站元素使用 box-sizing: border-box
+        // 多行省略号 text-overflow: ellipsis; -webkit-line-clamp: 2;
+        // 非主要页面很多都是图片 影响seo 看得出很缺前端
+        // 使用rem 最好文字都指定字体大小  不然会继承html的font-size
+    </script>
+    <title>凡亿课堂</title>
+</head>
+<body>
+<div id="app">
+    <div  class="container-wapper">
+        <div  class="content">
+            <div  class="search-top">
+                <div  class="input-wapper">
+                    <div >
+                        <img    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkBAMAAAATLoWrAAAAJ1BMVEVHcEyTnaaSnKaRnKaOl6OTnKaTnaaSnKaTnaaSnKaSnKWTnaaTnaZmyad6AAAADHRSTlMA9X4fEJfHX+MxTLLkRldUAAABFUlEQVQoz2NgAAHm6p6DbeEODAjAlXMGBKQXwEWY95yBgNMGMKHCMzAgDhVhOoMAChChGCShQ2ARdhBTdAmDVyCIUQASmghkCIHsZ1EEsoRBQkAHnJgAVs/ZA7QU5CagVDPUIgsgGyjLfebMwQlQIU6ZM2c2MDD4wKwBAZ0zZ0QYGGrAJBQ4njlzHOyqALgQ65kzR8EWInwLtOsYAwPQYgNEAAAdxMAAtAQpmIDWowmxgIWwaMRiPBZHYHEquoeOYPU2J1LguEECh2EPPAiZcyBByGCIGdDQ6GCxCkREkc6ZM+gxyYQiBFG2EM6XgSmDJ5NjRnBlXBshCWcByFyoX1hKM2TEwg3A5iowoAGdQ+giDEwKDAC1ANmbHkjaPwAAAABJRU5ErkJggg==">
+                    </div>
+                    <div>
+                        <input  placeholder="请输入你要查找的课程" confirm-type="search" type="text">
+                    </div>
+                    <div style="display: none;">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAEm0lEQVRYR8WYf0xbVRTHv+e2dJgsOiiikMxE3aTMmBgz4+KQZMb9YzI16kopyDZm20B/ZBoT/31/6V9qtC3wOsKAQVuKMboY/9BlRJw/osZlkuhww2RqwkSYbn84WNd3zH1QLD/fK3Tj/tfe+z3n88499557LyHP1t7+QXkaM08LCz0J4AEAWwEuBUhauszgP8D4BUynMhbtkyMe95/5uNCtGDVVVYuu8+1NRDgMoscACCPNXL8GxncAuibHRbeiOK8b6QyBIp0DtdC4G8C9RsZW62fgNwYdDnnrTq42bkWguai8QYJezSMiRszMQJSnJ14LhUIzyw1eFujtzlSpTdNOANht5GFt/fytJbNpX0vL8xOL9UuAVDVeliYaBqh6bc7MqRgYE+lrNX7/oUu5igVAinKs2F5R/AUR7TRndn2jmDEyhSu7FJ/v36ylBUDhWCJGIM/63OSn1hjtIZ+rdQlQpCO+F0J8mp+5goxmJu2poMd9SlrTI6QoiiirdIwA2FEQF/kbuVC+RTicTmdGBwp3DDSS4OP52ymcgpkbgr76uA4UiSVPm1rizKc1YavHtcyMKM5EAHIuj8QpbdoSsGzOFHMacRDVmED/KuB17aa3oomtm4roYnb6VhOm09jxit/189wYCseS3QQ0LdAQ9wQ89YcAsPw/Gk1WcxF+MgHEGmM7vafGfYJEhwkBmLXqoM99LjtWz72Kqi4QHdD/Y+6ZHB9tVhRFy45pa+u/T7NaxszYB6OVwmqin4jcZgTM+PCuEvGiTL7seGamyNFkv/wd8LgaiEiPjGypVMoy8Y82AOAFM/YB9FMkljwD4GGTAjBz39T46IHcKEgofcnmwMyt3F4ADWZtA/hBAv0FoCwPkcyOeHmJaMqNVK5ej8wVrRcMU5HP0U7KxJwhwJYX0GzG9g5/JpoHB/+fPmlj//6UpXav1rUk2c05mF4zEJiPT46PHsydugIAzcgpk0eAO819QHbBI15+R+GnjJmn1pTUAa+raXECS9TcaMmktldU9RBRo9mPZcYZCdRndiVo4Pfv3mJxLbfsJaD/5brGRaBWe4VjkAjPmYFi5jhF1IQfRBEzAnEjc39ra8OvuRujvdJxbD6Bl9kYw2rcQSSyu/vqbuTGGO1MbWNNO28GyEzpkKsv6HUdXEvpENbMttlqH0t+TcAuQ6h8i6slU8xWc8WVgS+DXlfNLJCacBORvv1vVJPly++pS8wf0OwVjhGijTmgMWNs+KSokpvs/Jk6qg7sYWL9GLkBbV/A6/pYr4e5zsNqUiWC91YCyWId9NW/lPW55BpUVnnbMIBHbwUUM5+14erjvpWuQRIiEumxw2b7HKAHbyYUM58XN6ZrV70oZgHebOsv2Wy1fETAEzcDioFveFo8Ewo55dFnQVvxsUFJpWz2v7UOIsjzcaEag/Hu5Lh4faWnGePnmKPJZ5nxDq37OYYvIsPNwZbZC+FKzRBICpWhIWvpuUuNQlAQhEfyCRczzoI5bKOrvT6fL22kNQW0cGvoe4hh2SOIdjKwHeB7wFSi7yGEywT8rjFfANP3GU0bOtLq/tEIIrf/P4wiAALREbegAAAAAElFTkSuQmCC">
+                    </div>
+                </div>
+                <div  class="btn-cancel">取消</div>
+            </div>
+
+            <div  class="history-wapper" style="display: none;">
+                <div  class="result-title">
+                    <span >搜索历史</span>
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAlCAYAAAAuqZsAAAAAsUlEQVRYR+2YUQqAMAxD3UFlZxseVBk4EKlur/Njk/id0DQ2tRgWx5PSthNajGsg+IzFhEwaVhjt3oN3OeYpRDkS9h/HaMJo5158GFaY1VER61mMxKG3OmYqJez8tFlvRo7RWZ7TMZKwHiyesZ5ihIuFPe2x1nVSw32+x2oFi1s1nITd50qOtc5OK04zphnTgjV+Ibiui9p+Uipp2uSYHLs4MGcqyXncg8WndU8xwrWEHZK/bf27cb/fAAAAAElFTkSuQmCC">
+                </div>
+                <div  class="result"></div>
+            </div>
+
+            <div  class="history-wapper">
+                <div  class="result-title">
+                    <span >热门搜索</span>
+                </div>
+                <div  class="result">
+                    <span >java</span><span>UI设计</span><span >自媒体</span><span>蔬菜种植</span><span >淘宝</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div  class="search-list" style="display: none;">
+            <ul ></ul>
+        </div>
+
+    </div> <!----> <!---->
+
+</div>
+<script>
+    $(".btn-cancel").tap(function () {
+        window.history.back(-1);
+    })
+    // $(".search").onchange(function () {
+    //     $(".history-wapper").css("display","none");
+    // })
+    // function textT() {
+    //     if($(".search").val() !== ""){
+    //         $(".history-wapper:nth-child(2)").css("display","none");
+    //     }else {
+    //         $(".history-wapper:nth-child(2)").css("display","block");
+    //     }
+    // }
+    // textT();
+
+</script>
+</body>
+</html>

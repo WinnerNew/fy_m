@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Window-target" content="_top">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script type="text/javascript" src="assets/zepto.min.js"></script>
+    <script type="text/javascript" src="assets/touch.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript">
+        (function (win) {
+            var remCalc = {};
+            var docEl = win.document.documentElement,
+                tid;
+
+            function refreshRem() {
+                // 获取当前窗口的宽度
+                var width = docEl.getBoundingClientRect().width;
+                // 大于640px 按640算
+                if (width > 750) {
+                    width = 750
+                }
+                // 把窗口的宽度固定分为10份 也就是10rem
+                // 按视觉稿640算  640/10=64px  那么1rem = 64px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/64 = 1.25rem
+                // 按钮的宽高固定为  1.25rem * 1.25rem
+                // 当窗口宽度缩放为 320px的时候
+                // 那么 1rem = 32px
+                // 原来 80px*80px的按钮现在变为 1.25rem * 32px = 40px
+                // 按钮变为 40px * 40px
+                // 其他宽度也类似
+                //
+                // cms做法也类似
+                // 只是我们把窗口宽度固定分为 6.4份，即6.4rem
+                // 所以 1rem = 100px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/100 = 0.8rem
+                // ....其他也差不多
+                //
+                //
+                // 对比
+                // 其实也就是计算rem的问题 视觉稿量出来的值  除64 或 100的问题
+                // 除100 总比 除64 好口算
+                // 就算用sass写个 @function px2rem代替口算
+                // .8rem 总比输入 px2rem(80)少几个字符
+                //
+                //
+                var rem = width / 10;  // cms 只要把这行改成  var rem = width /640 * 100
+                docEl.style.fontSize = rem + "px";
+                remCalc.rem = rem;
+                //误差、兼容性处理
+                var actualSize = parseFloat(window.getComputedStyle(document.documentElement)["font-size"]);
+                if (actualSize !== rem && actualSize > 0 && Math.abs(actualSize - rem) > 1) {
+                    var remScaled = rem * rem / actualSize;
+                    docEl.style.fontSize = remScaled + "px"
+                }
+            }
+
+            //函数节流，避免频繁更新
+            function dbcRefresh() {
+                clearTimeout(tid);
+                tid = setTimeout(refreshRem, 100)
+            }
+
+            //窗口更新动态改变font-size
+            win.addEventListener("resize", function () {
+                dbcRefresh()
+            }, false);
+
+            //页面显示的时候再计算一次   难道切换窗口之后再切换来窗口大小会变?....
+            win.addEventListener("pageshow", function (e) {
+                if (e.persisted) {
+                    dbcRefresh()
+                }
+            }, false);
+            refreshRem();
+            remCalc.refreshRem = refreshRem;
+            remCalc.rem2px = function (d) {
+                var val = parseFloat(d) * this.rem;
+                if (typeof d === "string" && d.match(/rem$/)) {
+                    val += "px"
+                }
+                return val
+            };
+            remCalc.px2rem = function (d) {
+                var val = parseFloat(d) / this.rem;
+                if (typeof d === "string" && d.match(/px$/)) {
+                    val += "rem"
+                }
+                return val
+            };
+            win.remCalc = remCalc
+        })(window);
+
+        // 考拉移动端全站使用rem的不是很多
+        // 主要用100%布局 比如width、height、padding
+        // 也有直接用px  字体大小使用px固定不变
+        // 还有使用em的  基于font-size 定line-height
+        // 全站元素使用 box-sizing: border-box
+        // 多行省略号 text-overflow: ellipsis; -webkit-line-clamp: 2;
+        // 非主要页面很多都是图片 影响seo 看得出很缺前端
+        // 使用rem 最好文字都指定字体大小  不然会继承html的font-size
+    </script>
+    <title>凡亿课堂</title>
+</head>
+<body>
+<div id="app">
+    <div class="wapper">
+        <div class="tz-header">
+            <div class="header">
+                <div class="content"><img
+                                                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAABf0lEQVRIS8XXsU7DMBAG4P9sAS/AyhvQplMTtoSChEoFFFaegLfhCZirUtQFiQ02JEbEyMQLsFJUxyhBCU1xEjt2IQ/w5XJ3vnMIjp5OsBcC8hKETRnPz8mF294JDwh8SsDGtydfreHtbnTIOZv8oA7gFGXshgjr2ZdLiU8h54PGEZeicXz68nR/2wiuQ5PojWEd1BjWRY1gJQrMhIjPkpwut61WKrxuOADjk0L1gZmEOHl+fLhTnYVauB1ERwx0DaK1vKVq0NpUNEUrYRu0FLZFlbAL9BfsCi3ALT865kRj0+qXjd203bzu7pA4RoBZS1XNcur4UR+Mpi7RNBVe0HsjwpZJ8+tsHRX8ISGGZUdVB00jbvlRn68iFXnxGEauOqLQbi57+G8OSFYUV5Er57ELvHTQ2+KVG8QG/5/VZFPQ2ogXcQIbL29qq/Wf4Su5sJji2qlYnGo6kTeCk5fU4Y3hSlyi+cW7KudO/kHUkTv4uckj93v7nOQVCO9SiIsvWDtb6Ou9NugAAAAASUVORK5CYII="
+                                                             class="back">
+                    <div class="title">登录</div>
+                    <div ></div>
+                </div>
+                <div class="line-bottom"></div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="flex-grow">
+                <div class="title">请输入您的手机号</div>
+                <div class="tip">为了更好的学习体验，请您先登录</div>
+                <div class="input-area">
+                    <div  class="" smstype="1">
+                        <div  class="inputwrapper phone"><p > +86</p> <i
+                                 class="triangle"></i> <input  type="number"
+                                                                                placeholder="请输入手机号">
+                            <div  class="clear-icon" style="display: none;"><img
+                                                                                                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAEm0lEQVRYR8WYf0xbVRTHv+e2dJgsOiiikMxE3aTMmBgz4+KQZMb9YzI16kopyDZm20B/ZBoT/31/6V9qtC3wOsKAQVuKMboY/9BlRJw/osZlkuhww2RqwkSYbn84WNd3zH1QLD/fK3Tj/tfe+z3n88499557LyHP1t7+QXkaM08LCz0J4AEAWwEuBUhauszgP8D4BUynMhbtkyMe95/5uNCtGDVVVYuu8+1NRDgMoscACCPNXL8GxncAuibHRbeiOK8b6QyBIp0DtdC4G8C9RsZW62fgNwYdDnnrTq42bkWguai8QYJezSMiRszMQJSnJ14LhUIzyw1eFujtzlSpTdNOANht5GFt/fytJbNpX0vL8xOL9UuAVDVeliYaBqh6bc7MqRgYE+lrNX7/oUu5igVAinKs2F5R/AUR7TRndn2jmDEyhSu7FJ/v36ylBUDhWCJGIM/63OSn1hjtIZ+rdQlQpCO+F0J8mp+5goxmJu2poMd9SlrTI6QoiiirdIwA2FEQF/kbuVC+RTicTmdGBwp3DDSS4OP52ymcgpkbgr76uA4UiSVPm1rizKc1YavHtcyMKM5EAHIuj8QpbdoSsGzOFHMacRDVmED/KuB17aa3oomtm4roYnb6VhOm09jxit/189wYCseS3QQ0LdAQ9wQ89YcAsPw/Gk1WcxF+MgHEGmM7vafGfYJEhwkBmLXqoM99LjtWz72Kqi4QHdD/Y+6ZHB9tVhRFy45pa+u/T7NaxszYB6OVwmqin4jcZgTM+PCuEvGiTL7seGamyNFkv/wd8LgaiEiPjGypVMoy8Y82AOAFM/YB9FMkljwD4GGTAjBz39T46IHcKEgofcnmwMyt3F4ADWZtA/hBAv0FoCwPkcyOeHmJaMqNVK5ej8wVrRcMU5HP0U7KxJwhwJYX0GzG9g5/JpoHB/+fPmlj//6UpXav1rUk2c05mF4zEJiPT46PHsydugIAzcgpk0eAO819QHbBI15+R+GnjJmn1pTUAa+raXECS9TcaMmktldU9RBRo9mPZcYZCdRndiVo4Pfv3mJxLbfsJaD/5brGRaBWe4VjkAjPmYFi5jhF1IQfRBEzAnEjc39ra8OvuRujvdJxbD6Bl9kYw2rcQSSyu/vqbuTGGO1MbWNNO28GyEzpkKsv6HUdXEvpENbMttlqH0t+TcAuQ6h8i6slU8xWc8WVgS+DXlfNLJCacBORvv1vVJPly++pS8wf0OwVjhGijTmgMWNs+KSokpvs/Jk6qg7sYWL9GLkBbV/A6/pYr4e5zsNqUiWC91YCyWId9NW/lPW55BpUVnnbMIBHbwUUM5+14erjvpWuQRIiEumxw2b7HKAHbyYUM58XN6ZrV70oZgHebOsv2Wy1fETAEzcDioFveFo8Ewo55dFnQVvxsUFJpWz2v7UOIsjzcaEag/Hu5Lh4faWnGePnmKPJZ5nxDq37OYYvIsPNwZbZC+FKzRBICpWhIWvpuUuNQlAQhEfyCRczzoI5bKOrvT6fL22kNQW0cGvoe4hh2SOIdjKwHeB7wFSi7yGEywT8rjFfANP3GU0bOtLq/tEIIrf/P4wiAALREbegAAAAAElFTkSuQmCC"
+                                                                                                   alt=""></div>
+                        </div>
+                        <div  class="inputwrapper code"><input  type="number"
+                                                                                 placeholder="请输入短信验证码"> <span
+                                 class="">获取验证码</span> <!---->
+                            <div  class="clear-icon" style="display: none;"><img
+                                                                                                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAEm0lEQVRYR8WYf0xbVRTHv+e2dJgsOiiikMxE3aTMmBgz4+KQZMb9YzI16kopyDZm20B/ZBoT/31/6V9qtC3wOsKAQVuKMboY/9BlRJw/osZlkuhww2RqwkSYbn84WNd3zH1QLD/fK3Tj/tfe+z3n88499557LyHP1t7+QXkaM08LCz0J4AEAWwEuBUhauszgP8D4BUynMhbtkyMe95/5uNCtGDVVVYuu8+1NRDgMoscACCPNXL8GxncAuibHRbeiOK8b6QyBIp0DtdC4G8C9RsZW62fgNwYdDnnrTq42bkWguai8QYJezSMiRszMQJSnJ14LhUIzyw1eFujtzlSpTdNOANht5GFt/fytJbNpX0vL8xOL9UuAVDVeliYaBqh6bc7MqRgYE+lrNX7/oUu5igVAinKs2F5R/AUR7TRndn2jmDEyhSu7FJ/v36ylBUDhWCJGIM/63OSn1hjtIZ+rdQlQpCO+F0J8mp+5goxmJu2poMd9SlrTI6QoiiirdIwA2FEQF/kbuVC+RTicTmdGBwp3DDSS4OP52ymcgpkbgr76uA4UiSVPm1rizKc1YavHtcyMKM5EAHIuj8QpbdoSsGzOFHMacRDVmED/KuB17aa3oomtm4roYnb6VhOm09jxit/189wYCseS3QQ0LdAQ9wQ89YcAsPw/Gk1WcxF+MgHEGmM7vafGfYJEhwkBmLXqoM99LjtWz72Kqi4QHdD/Y+6ZHB9tVhRFy45pa+u/T7NaxszYB6OVwmqin4jcZgTM+PCuEvGiTL7seGamyNFkv/wd8LgaiEiPjGypVMoy8Y82AOAFM/YB9FMkljwD4GGTAjBz39T46IHcKEgofcnmwMyt3F4ADWZtA/hBAv0FoCwPkcyOeHmJaMqNVK5ej8wVrRcMU5HP0U7KxJwhwJYX0GzG9g5/JpoHB/+fPmlj//6UpXav1rUk2c05mF4zEJiPT46PHsydugIAzcgpk0eAO819QHbBI15+R+GnjJmn1pTUAa+raXECS9TcaMmktldU9RBRo9mPZcYZCdRndiVo4Pfv3mJxLbfsJaD/5brGRaBWe4VjkAjPmYFi5jhF1IQfRBEzAnEjc39ra8OvuRujvdJxbD6Bl9kYw2rcQSSyu/vqbuTGGO1MbWNNO28GyEzpkKsv6HUdXEvpENbMttlqH0t+TcAuQ6h8i6slU8xWc8WVgS+DXlfNLJCacBORvv1vVJPly++pS8wf0OwVjhGijTmgMWNs+KSokpvs/Jk6qg7sYWL9GLkBbV/A6/pYr4e5zsNqUiWC91YCyWId9NW/lPW55BpUVnnbMIBHbwUUM5+14erjvpWuQRIiEumxw2b7HKAHbyYUM58XN6ZrV70oZgHebOsv2Wy1fETAEzcDioFveFo8Ewo55dFnQVvxsUFJpWz2v7UOIsjzcaEag/Hu5Lh4faWnGePnmKPJZ5nxDq37OYYvIsPNwZbZC+FKzRBICpWhIWvpuUuNQlAQhEfyCRczzoI5bKOrvT6fL22kNQW0cGvoe4hh2SOIdjKwHeB7wFSi7yGEywT8rjFfANP3GU0bOtLq/tEIIrf/P4wiAALREbegAAAAAElFTkSuQmCC"
+                                                                                                   alt=""></div>
+                        </div> <!---->
+                        <div  class="cantGetCode"><span >收不到验证码？</span></div>
+                        <div   class="mask" style="display: none;">
+                            <div  class="contentbox">
+                                <div  class="title">请您用以下方式联系我们的客服人员</div>
+                                <div  class="telbox">
+                                    <div  class="tips">电话联系</div>
+                                    <a  href="tel:0731-83072477"><img
+                                                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAACrUlEQVRYR7WXTYiNYRTHf/8FC7EgG5GPhYWPsTFKQhkLZUpCFj6ysJksNMrQJGooZjFhoqREKQpZKA2aSDYoIvnISlkoG0Qpi3F0bu/o9c593nvece+zud37/s85v/t8/J/zisIwsy7gOPADOA0MSvpd1DXzu/LJzOwocLhQ4DqwTdJIMwvnc/2FMLPdwIVEoXOS9rQUwszmAy+BSSWF1ku60wqQ2kyY2S1gQ4MCb4G2VuwPmdlC4DXwz/5IAHVKGmr2bDhEH3AkmPiypF1BbVjmEI+AVcGI55Lag9qwzCE+ATOCEUOSOoPasMwhfgETAxFfgbWSXgS0lSQO8QWY2iDqJ9Ah6Wml7EGxQzwDljbQd0k6H8xZWeYQg8DeksgnwApJVjl7MMAhOoD7JfoeSQPBfOOSOYSb1BtgQSJDv6TecWUPBo3a9ibgZiLGN+XKVpyK0Xr5W9QhHKbe+AC0S/KT1PSRh/Bj6h4wJ1HF9826VvQVxaZmOeA2PiEB0pK+YszNaWYHgf6SOe+VVPa88nLVg/DfbgCbE9ncLw5JOlG5WiKgbg9hZt5huUm1lRQ6BbiHJHtPM1sEHANmAu+Aq8Bw0fiSjYyZzQIeA/6ZGreB7ZK+FwVm5le+t4PTC8/ck/ZJGh5zROtVMTOfiYfAtBKQ98AWSd6d1YaZbc2a5iklcWcymJGGLZ2ZLQPuNbhp3dBOAp8zr1kT3C9XgJ0NIbJ/thi4m61tMH9Y1h2CyEDmAt6VLwmnjwk/hiEykMnAJd8Dsfwh1bdKEBmIxxzIjl7KWUPVM1F8OeocQbf4a8DsKhUL2gFJPZVnIp/EzPzSuwhsrAjizfV+SWc97r8gcr7ge8Tf6FONUZ7RTapbkr9W1kZTIHIw3jDvAFYD8zJv8VcFN7QHvnySXhVn7Q/MKczCvEOEJQAAAABJRU5ErkJggg=="
+                                                                                        class="icon"> <span
+                                             class="number">0731-83072477</span>
+                                        <div  class="right rf"><span
+                                                                                       class="calling">去拨打</span> <img
+
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAUCAYAAABWMrcvAAABHElEQVQ4T42TO04DQRBEX0FAQkhEAAniIkicgMSJwTbGMilnQRjx/0lInAiRQETEEaBQWwMaZsdrOtztN9VTUy3b28AFsAwcSbpkTsn2C7CR+gwcSpq0cQG9AutZU4BjSaezwIB2gEdg8b+gotF2F4i7lOBI0lmpOIUSuJsMmQv+QgncA84rigeS4vu0/kAJ7AExUqk4lBRP04QyME5eKMzpSrpvKGV37CfFHPyQtNIGjYHjYpp3SatVyPYIOCmAT6Aj6almxCygJ+muYYTtIRDxyQ8Lhb6k24blLcBA0k2eip8YDZJTpcK+pOtGjGx3gIfKSPGYV7WkR8rfgLXs5xcQClVgaoTtZ2AzQQGEQuv2BrSV1mIprXuM2lrfHhp0FWu4G0cAAAAASUVORK5CYII="
+                                                class="arrow"></div>
+                                    </a></div>
+                                <div  class="qqbox">
+                                    <div  class="tips">QQ联系</div>
+                                    <a
+                                       href="http://wpa.qq.com/msgrd?v=3&amp;site=qq&amp;m&amp;uin=3520069320"
+                                       class="qqbgcolor"><img
+                                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAoCAYAAACWwljjAAAC70lEQVRYR82YW4hNURjHf//cEhoSXoRmSBHSPNCJeZgH0kjJtdweJfdcI6nxMIqUCHmSPCAPiqQ0udQYU5JESXiU2xgUIfr0sc90nNnn7H2Ytcf3eM5a3/fb+1t7rf/6i/8s9Dc8ZlYFLATqganASGAg8AZ4AtwCzkl6UGn+ioDMbCywF1gA9E9R7CawU9KdFGN/DUkFZGa9gUZgC9A3bfJonAHHgK2SviTNTQSK2nMemJWULOH/NqBBUnu5cWWBzGwA0AxM+0eY/HRfU3WSPpTKlwR0FljSTTD5NJeBeZK8lV2iJJCZ+cK90M0w+XSrJZ1MDRQt4sdATSCg98BoSR+L88e+ITNb7PtIIJh82m2SDqYF8j43BAZ6KmlcIpCZ+YbXAfQLDOTpayQ9L6zTpWVmVgf4DptFzJd0MQloLXA0Cxpgu6QDSUBHgHUZAZ2QtCYJ6CowOyOgFkkzkoBeA8MyAvoEVEn6ka/3x6I2s2rgWUYw+TK1ku6VAtoB7M8YqEnSri5AZtYLeASMzxjoFVAt6bPX7WyZmflqdyHVE9EoyZXobyAzmwS4gEojS0MAf490Uquik/0+MDFEpQpy+sc0xYGWAWcqmBhy6EYHugTMDVmlgtzNDvQSGFHBpJBD2x0oVtuGrFomtznQO2BIDwEUl+1wINc+roF6Irw7hcdXmwPtiW6lDnQd8EV+KCO6fcAoYFVUb7MDDY02xRvAeuAr0AJMDwzlx1Qt8A3YACwHcqVuHZOBu0CfQFAuN2ZKas3n97PUZUi5i2KTOxeBgA5L2hSXu9Qb8t9dijhUiPA1ujvODSkF5Bc4t15Chouy+mLjIe4alKVIu+b6vdB4KJawg4G3gIu1rCJXuLjj3tAVYE5GNC+ACYVtiwNyk+o4sCIFlO8hp4DTgNt+i4CVwKAUcx8CSyX5ftQZ5T57V5HuEeWAMZEi8H3Jzz53wrz/7rT6U3ZGZAE6mFuA7tAOj3xJt2Dc4nED1M2M23Gm1U9wUvBYtR9U3QAAAABJRU5ErkJggg=="
+                                                              class="icon qqIcon"> <span
+                                                                                         class="number">3520069320</span>
+                                        <div  class="right rf"><span
+                                                                                       class="calling">去咨询</span> <img
+
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAUCAYAAABWMrcvAAABHElEQVQ4T42TO04DQRBEX0FAQkhEAAniIkicgMSJwTbGMilnQRjx/0lInAiRQETEEaBQWwMaZsdrOtztN9VTUy3b28AFsAwcSbpkTsn2C7CR+gwcSpq0cQG9AutZU4BjSaezwIB2gEdg8b+gotF2F4i7lOBI0lmpOIUSuJsMmQv+QgncA84rigeS4vu0/kAJ7AExUqk4lBRP04QyME5eKMzpSrpvKGV37CfFHPyQtNIGjYHjYpp3SatVyPYIOCmAT6Aj6almxCygJ+muYYTtIRDxyQ8Lhb6k24blLcBA0k2eip8YDZJTpcK+pOtGjGx3gIfKSPGYV7WkR8rfgLXs5xcQClVgaoTtZ2AzQQGEQuv2BrSV1mIprXuM2lrfHhp0FWu4G0cAAAAASUVORK5CYII="
+                                                class="arrow"></div>
+                                    </a></div>
+                                <img
+                                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MiA0MiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQoKICAgICAgLmNscy0yIHsKICAgICAgICBmaWxsOiAjOTQ5NTk4OwogICAgICB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8ZyBpZD0iQ2xvc2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNjMgLTUzMikiPgogICAgPGNpcmNsZSBpZD0ieCIgY2xhc3M9ImNscy0xIiBjeD0iMjEiIGN5PSIyMSIgcj0iMjEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2MyA1MzIpIi8+CiAgICA8ZyBpZD0iXy1zLWdpYW5iIiBkYXRhLW5hbWU9Ii1zLWdpYW5iIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNDE2OS42NTQgLTM3OTEuMTU0KSI+CiAgICAgIDxwYXRoIGlkPSJnaWFuYiIgY2xhc3M9ImNscy0yIiBkPSJNNDM1OC41NTMsNDMzOS44NjFhMSwxLDAsMCwwLTEuNDE1LTEuNDE1bC0zLjg4OSwzLjg5LTMuODg5LTMuODlhMSwxLDAsMCwwLTEuNDE0LDEuNDE1bDMuODg5LDMuODg5LTMuODg5LDMuODg5YTEsMSwwLDAsMCwxLjQxNCwxLjQxNGwzLjg4OS0zLjg4OSwzLjg4OSwzLjg4OWExLDEsMCwwLDAsMS40MTUtMS40MTRsLTMuODktMy44ODlaIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4K"
+                                     class="closebtn"></div>
+                        </div> <!----> <!----></div>
+                </div>
+                <div class="btn-login ">登 录</div>
+                <div class="change-register"><span >账号登录</span> <label
+                        >注册</label></div>
+            </div>
+            <div class="other-login">
+                <div  class="re-other"><span >第三方平台登录</span>
+                    <div ><i ><img  src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNDBweCIgaGVpZ2h0PSI0MHB4IiB2aWV3Qm94PSIwIDAgNDAgNDAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUzLjIgKDcyNjQzKSAtIGh0dHBzOi8vc2tldGNoYXBwLmNvbSAtLT4KICAgIDx0aXRsZT7liIbnu4QgMjwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSLkuKrkuroiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNjguMDAwMDAwLCAtNjUxLjAwMDAwMCkiPgogICAgICAgICAgICA8ZyBpZD0iamlhbSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTY4LjAwMDAwMCwgMzQyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPGcgaWQ9IuWIhue7hC0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgMzA5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9IuakreWchuW9oi1jb3B5IiBmaWxsPSIjQTVCRUVFIiBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yNi41NjcxODgyLDIxLjc2NjkyMTggQzI2LjU3MDczMjksMjEuODQ0MTcwMiAyNi41NzI1MjQ2LDIxLjkyMTg3NTggMjYuNTcyNTI0NiwyMiBDMjYuNTcyNTI0NiwyMy42ODUzNzQ3IDI1LjczODY1MzksMjUuMTc1OTg4NSAyNC40NjA5NzkyLDI2LjA4MTc3NDYgQzI1LjcwMzI3NTcsMjYuMjM1MzI4MyAyNi41NzI1MjQ2LDI2LjU4ODY2MDcgMjYuNTcyNTI0NiwyNyBDMjYuNTcyNTI0NiwyNy41NTIyODQ3IDI1LjAwNTUyMTMsMjggMjMuMDcyNTI0NiwyOCBDMjEuMTM5NTI4LDI4IDE5LjU3MjUyNDYsMjcuNTUyMjg0NyAxOS41NzI1MjQ2LDI3IEMxOS41NzI1MjQ2LDI3LjU1MjI4NDcgMTguMDA1NTIxMywyOCAxNi4wNzI1MjQ2LDI4IEMxNC4xMzk1MjgsMjggMTIuNTcyNTI0NiwyNy41NTIyODQ3IDEyLjU3MjUyNDYsMjcgQzEyLjU3MjUyNDYsMjYuNTg4NjYwNyAxMy40NDE3NzM2LDI2LjIzNTMyODMgMTQuNjg0MDcwMSwyNi4wODE3NzQ2IEMxMy40MDYzOTUzLDI1LjE3NTk4ODUgMTIuNTcyNTI0NiwyMy42ODUzNzQ3IDEyLjU3MjUyNDYsMjIgQzEyLjU3MjUyNDYsMjEuOTIxODc1OCAxMi41NzQzMTY0LDIxLjg0NDE3MDIgMTIuNTc3ODYxLDIxLjc2NjkyMTggQzExLjc4ODUyOTEsMjIuMDExMDkzMyAxMS4xOTk5NjY4LDIyLjAyNDU4MzkgMTEuMDQxNDM1NywyMS43NSBDMTAuNzc0MzU4NCwyMS4yODc0MDg1IDExLjgyNTYxODcsMjAuMTc2NjIzNCAxMy40MDk0NDIxLDE5LjIyOTc4NzcgQzEzLjYwNDY5MDcsMTguOTM2OTUyMiAxMy44MzAwMTQsMTguNjY1ODgzOCAxNC4wODA5OTg3LDE4LjQyMDk5NTkgQzEzLjc1NDA3MzgsMTcuNjgwNTE2MSAxMy41NzI1MjQ2LDE2Ljg2MTQ1OTYgMTMuNTcyNTI0NiwxNiBDMTMuNTcyNTI0NiwxMi42ODYyOTE1IDE2LjI1ODgxNjEsMTAgMTkuNTcyNTI0NiwxMCBDMjIuODg2MjMzMSwxMCAyNS41NzI1MjQ2LDEyLjY4NjI5MTUgMjUuNTcyNTI0NiwxNiBDMjUuNTcyNTI0NiwxNi44NjE0NTk2IDI1LjM5MDk3NTQsMTcuNjgwNTE2MSAyNS4wNjQwNTA2LDE4LjQyMDk5NTkgQzI1LjMxNTAzNTMsMTguNjY1ODgzOCAyNS41NDAzNTg2LDE4LjkzNjk1MjIgMjUuNzM1NjA3MSwxOS4yMjk3ODc3IEMyNy4zMTk0MzA2LDIwLjE3NjYyMzQgMjguMzcwNjkwOSwyMS4yODc0MDg1IDI4LjEwMzYxMzUsMjEuNzUgQzI3Ljk0NTA4MjUsMjIuMDI0NTgzOSAyNy4zNTY1MjAyLDIyLjAxMTA5MzMgMjYuNTY3MTg4MiwyMS43NjY5MjE4IFoiIGlkPSLlkIjlubblvaLnirYiIGZpbGw9IiNGRkZGRkYiPjwvcGF0aD4KICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></i>
+                        <!----></div>
+                </div>
+            </div>
+        </div>
+    </div> <!----> <!----></div>
+<script>
+    $(".content img").tap(function(){
+        $(".van-toast").css("display","-webkit-box");
+        $(".van-overlay").css("display","-webkit-box");
+        window.history.back(-1);
+        // self.location='index.html';
+    })
+    $(".phone").tap(function () {
+        $(this).siblings().removeClass("activeborder");
+        $(this).siblings().children(".clear-icon").css("display","none");
+        $(this).addClass("activeborder");
+        $(this).children(".clear-icon").css("display","block")
+    })
+    $(".code").tap(function () {
+        $(this).siblings().removeClass("activeborder");
+        $(this).siblings().children(".clear-icon").css("display","none");
+        $(this).addClass("activeborder");
+        $(this).children(".clear-icon").css("display","block")
+    })
+
+</script>
+
+<div class="van-toast van-toast--default van-toast--middle" style="z-index: 2003; display: none;width: 130px">
+    <div class="van-loading van-loading--spinner van-loading--white" style="color: white;">
+        <span class="van-loading__spinner van-loading__spinner--spinner">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+    </div>
+    <div class="van-toast__text">加载中</div>
+</div>
+
+<div class="van-overlay" style="z-index: 2000;display: none;"></div>
+</body>
+</html>

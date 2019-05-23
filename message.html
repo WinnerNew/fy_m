@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Window-target" content="_top">
+    <!--    <link rel="stylesheet" href="css/app.css">-->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/message.css">
+    <script type="text/javascript" src="assets/zepto.min.js"></script>
+    <script type="text/javascript" src="assets/touch.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <!--    <link rel="stylesheet" href="css/index.css">-->
+    <script type="text/javascript">
+        (function (win) {
+            var remCalc = {};
+            var docEl = win.document.documentElement,
+                tid;
+
+            function refreshRem() {
+                // 获取当前窗口的宽度
+                var width = docEl.getBoundingClientRect().width;
+                // 大于640px 按640算
+                if (width > 750) {
+                    width = 750
+                }
+                // 把窗口的宽度固定分为10份 也就是10rem
+                // 按视觉稿640算  640/10=64px  那么1rem = 64px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/64 = 1.25rem
+                // 按钮的宽高固定为  1.25rem * 1.25rem
+                // 当窗口宽度缩放为 320px的时候
+                // 那么 1rem = 32px
+                // 原来 80px*80px的按钮现在变为 1.25rem * 32px = 40px
+                // 按钮变为 40px * 40px
+                // 其他宽度也类似
+                //
+                // cms做法也类似
+                // 只是我们把窗口宽度固定分为 6.4份，即6.4rem
+                // 所以 1rem = 100px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/100 = 0.8rem
+                // ....其他也差不多
+                //
+                //
+                // 对比
+                // 其实也就是计算rem的问题 视觉稿量出来的值  除64 或 100的问题
+                // 除100 总比 除64 好口算
+                // 就算用sass写个 @function px2rem代替口算
+                // .8rem 总比输入 px2rem(80)少几个字符
+                //
+                //
+                var rem = width / 10;  // cms 只要把这行改成  var rem = width /640 * 100
+                docEl.style.fontSize = rem + "px";
+                remCalc.rem = rem;
+                //误差、兼容性处理
+                var actualSize = parseFloat(window.getComputedStyle(document.documentElement)["font-size"]);
+                if (actualSize !== rem && actualSize > 0 && Math.abs(actualSize - rem) > 1) {
+                    var remScaled = rem * rem / actualSize;
+                    docEl.style.fontSize = remScaled + "px"
+                }
+            }
+
+            //函数节流，避免频繁更新
+            function dbcRefresh() {
+                clearTimeout(tid);
+                tid = setTimeout(refreshRem, 100)
+            }
+
+            //窗口更新动态改变font-size
+            win.addEventListener("resize", function () {
+                dbcRefresh()
+            }, false);
+
+            //页面显示的时候再计算一次   难道切换窗口之后再切换来窗口大小会变?....
+            win.addEventListener("pageshow", function (e) {
+                if (e.persisted) {
+                    dbcRefresh()
+                }
+            }, false);
+            refreshRem();
+            remCalc.refreshRem = refreshRem;
+            remCalc.rem2px = function (d) {
+                var val = parseFloat(d) * this.rem;
+                if (typeof d === "string" && d.match(/rem$/)) {
+                    val += "px"
+                }
+                return val
+            };
+            remCalc.px2rem = function (d) {
+                var val = parseFloat(d) / this.rem;
+                if (typeof d === "string" && d.match(/px$/)) {
+                    val += "rem"
+                }
+                return val
+            };
+            win.remCalc = remCalc
+        })(window);
+
+        // 考拉移动端全站使用rem的不是很多
+        // 主要用100%布局 比如width、height、padding
+        // 也有直接用px  字体大小使用px固定不变
+        // 还有使用em的  基于font-size 定line-height
+        // 全站元素使用 box-sizing: border-box
+        // 多行省略号 text-overflow: ellipsis; -webkit-line-clamp: 2;
+        // 非主要页面很多都是图片 影响seo 看得出很缺前端
+        // 使用rem 最好文字都指定字体大小  不然会继承html的font-size
+    </script>
+    <title>凡亿课堂</title>
+</head>
+<body>
+<div id="app">
+    <div class="container pad-header pad-nav">
+        <div style="">
+            <div class="header">
+                <div class="content">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAoCAYAAAD6xArmAAABf0lEQVRIS8XXsU7DMBAG4P9sAS/AyhvQplMTtoSChEoFFFaegLfhCZirUtQFiQ02JEbEyMQLsFJUxyhBCU1xEjt2IQ/w5XJ3vnMIjp5OsBcC8hKETRnPz8mF294JDwh8SsDGtydfreHtbnTIOZv8oA7gFGXshgjr2ZdLiU8h54PGEZeicXz68nR/2wiuQ5PojWEd1BjWRY1gJQrMhIjPkpwut61WKrxuOADjk0L1gZmEOHl+fLhTnYVauB1ERwx0DaK1vKVq0NpUNEUrYRu0FLZFlbAL9BfsCi3ALT865kRj0+qXjd203bzu7pA4RoBZS1XNcur4UR+Mpi7RNBVe0HsjwpZJ8+tsHRX8ISGGZUdVB00jbvlRn68iFXnxGEauOqLQbi57+G8OSFYUV5Er57ELvHTQ2+KVG8QG/5/VZFPQ2ogXcQIbL29qq/Wf4Su5sJji2qlYnGo6kTeCk5fU4Y3hSlyi+cW7KudO/kHUkTv4uckj93v7nOQVCO9SiIsvWDtb6Ou9NugAAAAASUVORK5CYII="
+                         class="back" style="display: none;">
+                    <div class="title">消息</div>
+                    <div >
+                        <button class="open">
+                            <img src="data:image/png;base64,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"
+                                 alt="">
+                            打开APP
+                        </button>
+                    </div>
+                </div>
+                <div class="line-bottom"></div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="tz-empty">
+                <img src="images/message.png" mode="widthFix">
+                <p>暂无会话内容~</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tz-nav-bottom">
+        <div><img
+                src="data:image/png;base64,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">
+            <p class="">选课</p></div>
+        <div><img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABRCAYAAACqj0o2AAADdElEQVR4Xu3cv2sTYRgH8O+TtLU0l4pddFBRUBSKJEVwFEGx/4Cgg7hoRYcqJgguQjcpkpQqFHSQjoIODi5aB4tTB2lSbReLlNahk9L2an/l7pGABSu9JJd7krtcnlvzvt/3fT/3XO54yYWgh2cB8pygAVBEgSJQREUUEBCI0EpURAEBgQitxHogHuv/tifedvAAW+tNBU7Rdl7Z/LE4+/T4RjlnR5jTN7nVMlZHQbgEoK1cUEg/32TgTWEtdn16hEynNToiJlMrIyC6HVIcV8ti5mf5bPyWa8RE2vxJwD5Xo4W0MYN/5TPxLteIybTJITWpalm5jOF41Tpfzoq4A1sRq6q9nZ0UUREFBAQitBIVUUBAIEIrUREFBAQialKJzHhng55Ebfu3wBx9i7AikY4I8R0CektNQhyRgcWleOzo3ACt+7Z6wYGPDHD73mVzjoj2O8XWAnEsnzEuCq7D96hEyvxAhPP1Q2S8z2eNkuXvu4rLCSTT5hiAC4roEu7f5oroAW+7qyI2IqLNPD6VjZ8TmHtgIpJpcxzA2Tp+J5JZsDa6p4e75gOj4GEi3XfXDre0WDMExOqGWByIgQUGXkaYVj3M3/euNnGMgCsEHKrrw7bvK/dhAuIP2z6swfchFVHgFCiiIgoICERoJSqigIBARE0qMUibskw4SREaBNAp4LVrhDhiEDdlT6VW+6LEzxsJMXCbssn7ZhI2JhsHMYCbsj0pM8GEnCJ6EFBED3jbXRWxGRGDuCmbuLd0hiLRCYHzUadHHA7epmwibT4i4EHDIAZrU9YmJjoBxmWi2r3wKf6wXauzHeRcRRQ4O4qoiAICAhFaiYooICAQoZWoiAICAhFaiYooICAQoZWoiAICAhFaiYooIOA9opDLGK1OMfrSeAXADOTyGaNHESvA2r0Jrdm21Ts11Pmp5ojMWKAIvYBd/BFtSA6ytgqFyNuvw8ZUqRUJXc70erml48b3QVoKCZ+rZXhCZCaTwP25rDHqatSQNa4akUETW3bh6szQ3tmQmbhejntEhsWMx/nJ2EN8pILrEUPYwR0i07zF9rUvQ/HiizN6/BWoGJGZX620Gn3NevPwdHfWm0f5C65kJerNozxgsYUjYvFnGfnPevOohLGp/p2zEpBq2ihiNWr/9VFERRQQEIjQSlREAQGBCK1EAcQ/vM0HcMgqmi0AAAAASUVORK5CYII=">
+            <p class="activeColor">消息</p> <span class="unread" style="display: none;"><span>0</span> <i
+                    style="display: none;">+</i></span></div> <!---->
+        <div><img
+                src="data:image/png;base64,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">
+            <p class="">我的</p></div>
+    </div>
+</div>
+
+<div class="van-toast van-toast--default van-toast--middle" style="z-index: 2003; display: none;width: 130px">
+    <div class="van-loading van-loading--spinner van-loading--white" style="color: white;">
+        <span class="van-loading__spinner van-loading__spinner--spinner">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+    </div>
+    <div class="van-toast__text">加载中</div>
+</div>
+
+<div class="van-overlay" style="z-index: 2000;display: none;"></div>
+
+</body>
+<script>
+    //跳转消息
+    $('.tz-nav-bottom > div:nth-child(1)').tap(function(){
+        $(".van-toast").css("display","-webkit-box");
+        $(".van-overlay").css("display","-webkit-box");
+        self.location='index.html';
+    })
+    //跳转消息
+    $('.tz-nav-bottom > div:nth-child(2)').tap(function(){
+        $(".van-toast").css("display","-webkit-box");
+        $(".van-overlay").css("display","-webkit-box");
+        self.location='message.html';
+    })
+    //跳转个人中心
+    $('.tz-nav-bottom > div:nth-child(3)').tap(function(){
+        $(".van-toast").css("display","-webkit-box");
+        $(".van-overlay").css("display","-webkit-box");
+        self.location='login.html';
+    })
+</script>
+</html>

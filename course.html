@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Window-target" content="_top">
+    <!--    <link rel="stylesheet" href="css/app.css">-->
+    <link rel="stylesheet" href="css/reset.css">
+<!--    <link rel="stylesheet" href="css/common.css">-->
+    <link rel="stylesheet" href="css/course.css">
+    <script type="text/javascript" src="assets/zepto.min.js"></script>
+    <script type="text/javascript" src="assets/touch.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript">
+        (function (win) {
+            var remCalc = {};
+            var docEl = win.document.documentElement,
+                tid;
+
+            function refreshRem() {
+                // 获取当前窗口的宽度
+                var width = docEl.getBoundingClientRect().width;
+                // 大于640px 按640算
+                if (width > 750) {
+                    width = 750
+                }
+                // 把窗口的宽度固定分为10份 也就是10rem
+                // 按视觉稿640算  640/10=64px  那么1rem = 64px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/64 = 1.25rem
+                // 按钮的宽高固定为  1.25rem * 1.25rem
+                // 当窗口宽度缩放为 320px的时候
+                // 那么 1rem = 32px
+                // 原来 80px*80px的按钮现在变为 1.25rem * 32px = 40px
+                // 按钮变为 40px * 40px
+                // 其他宽度也类似
+                //
+                // cms做法也类似
+                // 只是我们把窗口宽度固定分为 6.4份，即6.4rem
+                // 所以 1rem = 100px
+                // 640视觉中 80px*80px的按钮 转换为rem  80/100 = 0.8rem
+                // ....其他也差不多
+                //
+                //
+                // 对比
+                // 其实也就是计算rem的问题 视觉稿量出来的值  除64 或 100的问题
+                // 除100 总比 除64 好口算
+                // 就算用sass写个 @function px2rem代替口算
+                // .8rem 总比输入 px2rem(80)少几个字符
+                //
+                //
+                var rem = width / 10;  // cms 只要把这行改成  var rem = width /640 * 100
+                docEl.style.fontSize = rem + "px";
+                remCalc.rem = rem;
+                //误差、兼容性处理
+                var actualSize = parseFloat(window.getComputedStyle(document.documentElement)["font-size"]);
+                if (actualSize !== rem && actualSize > 0 && Math.abs(actualSize - rem) > 1) {
+                    var remScaled = rem * rem / actualSize;
+                    docEl.style.fontSize = remScaled + "px"
+                }
+            }
+
+            //函数节流，避免频繁更新
+            function dbcRefresh() {
+                clearTimeout(tid);
+                tid = setTimeout(refreshRem, 100)
+            }
+
+            //窗口更新动态改变font-size
+            win.addEventListener("resize", function () {
+                dbcRefresh()
+            }, false);
+
+            //页面显示的时候再计算一次   难道切换窗口之后再切换来窗口大小会变?....
+            win.addEventListener("pageshow", function (e) {
+                if (e.persisted) {
+                    dbcRefresh()
+                }
+            }, false);
+            refreshRem();
+            remCalc.refreshRem = refreshRem;
+            remCalc.rem2px = function (d) {
+                var val = parseFloat(d) * this.rem;
+                if (typeof d === "string" && d.match(/rem$/)) {
+                    val += "px"
+                }
+                return val
+            };
+            remCalc.px2rem = function (d) {
+                var val = parseFloat(d) / this.rem;
+                if (typeof d === "string" && d.match(/px$/)) {
+                    val += "rem"
+                }
+                return val
+            };
+            win.remCalc = remCalc
+        })(window);
+
+        // 考拉移动端全站使用rem的不是很多
+        // 主要用100%布局 比如width、height、padding
+        // 也有直接用px  字体大小使用px固定不变
+        // 还有使用em的  基于font-size 定line-height
+        // 全站元素使用 box-sizing: border-box
+        // 多行省略号 text-overflow: ellipsis; -webkit-line-clamp: 2;
+        // 非主要页面很多都是图片 影响seo 看得出很缺前端
+        // 使用rem 最好文字都指定字体大小  不然会继承html的font-size
+    </script>
+    <title>凡亿课堂</title>
+</head>
+<body>
+<div id="app">
+    <div  class="wrapper isH5">
+        <div  class="cover" ><img
+                                                                                         src="https://res.shiguangkey.com/file/201804/28/20180428192613701348981.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                                                                         alt="课程封面">
+            <div  class="app-main shadow">
+                <div class="liveNotice">
+                    <div class="liveTitle">下节直播：Java零基础到项目实战</div>
+                    <div class="liveNotTime"><img
+                                                                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOCAxOCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggaWQ9InNqIiBjbGFzcz0iY2xzLTEiIGQ9Ik05LDQ2NmE5LDksMCwxLDEsOS05QTkuMDEsOS4wMSwwLDAsMSw5LDQ2NlpNOCw0NTJhMSwxLDAsMCwwLTEsMXY1YTEsMSwwLDAsMCwxLDFoNGExLDEsMCwwLDAsMC0ySDl2LTRBMSwxLDAsMCwwLDgsNDUyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtNDQ4KSIvPgo8L3N2Zz4K"
+                                                                     alt="">2019/05/23 20:00
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="basic" >
+            <div  class="course-title">
+                <div  class="title">
+                    Java零基础到项目实战
+                </div>
+                <div   class="share">
+                    <button  plain=""><img
+                                                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAABECAMAAAAPzWOAAAAAXVBMVEWSnKXf4uTq6+zq6+zO0dW5v8Pq6+xHcEyRnKTq7O3r7O3q6+zq7O2RnKXq7O2SnKXq6+zr7O2SnKWSnKXr6+3q6+ySnKXq6+ySnKXq6+zr6+2SnKW4vsPq7O3q6+wWW2cQAAAAHnRSTlPMDtXlBhtpAEr8KbZaOE3D86K4fjSQb8ixdH6baoeIZLogAAADWklEQVRYw62Y2dKrIAyABVmKK261yzTv/5gH1LaSoNUzf64chc+QBRISvSWiV0POU2uMTXk+qF5sDk3ir+U9t4DE5kqegFS5cZPS5lFlkgnBZFY9mtS9Mnl1DCIK7kerDH/IlGfz4gCkdwi+pbdU/mv/A8IGA2mxbUItVApmEHuQjLsRTO+K/w/PtiGFhTHTPyUbwRZbEGWgEfqAiAaMikMeAHd9UO4AjxjkAabQh6UwK8oHosBU+oRUBhSGVOaMHrMun78ukMyC0idFgc3WEMGh0aelgVGsIC/g4jzE/fr1hWTGRGOsvD7benpok6+05SfqlnkTZFyIYbJd55n++Zas5fYZ84LxDakgJfnCuvcUCvnGFkuhWiAj9cylDmYEy1lBnIfGGeIUwVa9LqvvLnL96UIgYlLFvchJysxLuZVYPaqJS6LcQ5gxMsKoL3qLsYZIY5iDKM8ig9syzrggiFuHcpAcwqSR3qY3ucHQGFI4HRJtQZLF1JsMApFgddIDDxVZBm8wCERz6BOFUs8r8txmUEgDKhlCBwtvkXKbQSF3GJIcgg2tDHKDMnwGhN+dZRMOGY7V6w7DZQDyvjNqkobOeZLVhIxItkOaWAgy2OerPMPQzEEMBK+8XcUZhhZgHSRIYWz89hfDQQxeDtakRgzh4xktx2LDYptcUDpLEgLesMjFxDtCEF+FAZ05F6Ngi8SJ3v9euWBDYe8jtt2BtCSOfNijBIzmTviPWpAExFtBNIsDk3WabAUCbUpyLzCm0JPIOVaQ7VFMO1t8QWVNFZm3R7xRT3tsGytkpbdqjQ7LeaNmftOnu72MM9BKBZuPjIlFzz9y7swn65VUOnn8GBXLCbjGlM/pXYez732MOiepjbP4WkqmmSy7pSzoaMnFl6qgoKUFKgNmoSerKy2KnSJHdITRUVsP3yJH98b0m5XSokUE8ZmXLETO4jXbrU7q2/NaxupCxmFYVY/sP0vQ5dffYvh+lnFHxbD3EJwty78z/rRB+JtWZaIcbhKUiTdNf9O+uXXaSNMbiTEOttppacdjLe2Y7TXX4mdzXfxsrmdlIL1vtfn3FCKtc+TWohr3LhzG6ujVR2PjVx+26U9cwrBimhRI2hRMixOQyZPq1fj7IH8b1LzUju//AXr2j1Jsb/rpAAAAAElFTkSuQmCC"
+                                                             alt="" id="share"></button>
+                    <span  class="active" style=""><span >邀请好友一起学习</span> <img
+
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAXBAMAAADNSrOMAAAAJFBMVEVHcEydoLOdpbWcpbWdpbWdpradpLWdpbSdpbWcpbWdpLSdpbUNKABrAAAAC3RSTlMAEPXKmkCIX7mpdtuFK7IAAABSSURBVAjXY0hgAIMtEGq3A4SCcHfvngChdkCo3Y0QarMAmNptCKGA3N0QLpjaBqEmgKktECUJYGoXRPsCMLUdbOamAjClDrZvUwCYUoW4BcIBALQsM5zpNz/kAAAAAElFTkSuQmCC"
+                            alt="" class="img2"></span> <!----></div>
+            </div>
+            <div  class="price-num-wrapper"><p  class="free"> 免费</p>
+                <p  class="applyNum">报名人数：<span >60197人</span></p></div>
+        </div>
+        <div  >
+            <div  id="scrollBar" class="add">
+                <div  class="nav">
+                    <div   class="tz-scroll">
+                        <div  class="tz-scroll-item active">课程介绍</div>
+                        <div  class="tz-scroll-item">课程目录</div>
+                        <div  class="tz-scroll-item">推荐课程</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  id="introduce"><!---->
+            <div  class="content" ><!---->
+                <div  class="container">
+                    <div  class="content">
+                        <div  class="content-inner"><!---->
+                            <div  class="pic-wapper"><img
+                                                                            src="https://res.shiguangkey.com/file/201812/01/20181201171818812180056.jpg"
+                                                                            alt=""></div>
+                            <div  class="text"><p >Java学院高级讲师丹丹老师</p>
+                                <div >学习无忧,就上潭州，我是丹丹老师！</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div  class="content" >
+                <div  class="box-hd"><p  class="title">课程详情</p></div>
+                <div class="container" >
+                    <div class="introduce removeH addH">
+                        <div >
+                            <div class="media-wrap image-wrap"><img
+                                    src="https://res.shiguangkey.com/file/201903/15/20190315175820281595274.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                    style="max-width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  id="courseContent">
+            <div  class="cate-block">
+                <div  class="content" >
+                    <div  class="box-hd"><p  class="title">课程目录</p></div>
+                    <div  class="courseCatalog" >
+                        <div  class="nav-list">
+                            <ul >
+                                <li  class="clearfix">
+                                    <div  class="chanpterTitle">
+                                        <div  class="ell name"><span
+                                                                                       class="nameNum">
+              04
+            </span>
+                                            java项目实战
+                                        </div>
+                                        <span  class="living">
+            05.23 20:00
+          </span></div> <!----></li>
+                                <li  class="clearfix">
+                                    <div  class="chanpterTitle">
+                                        <div  class="ell name"><span
+                                                                                       class="nameNum">
+              05
+            </span>
+                                            java项目实战
+                                        </div>
+                                        <span  class="living">
+            05.24 20:00
+          </span></div> <!----></li>
+                                <li  class="clearfix">
+                                    <div  class="chanpterTitle">
+                                        <div  class="ell name"><span
+                                                                                       class="nameNum">
+              06
+            </span>
+                                            java项目实战
+                                        </div>
+                                        <span  class="living">
+            05.25 20:00
+          </span></div> <!----></li>
+                                <li  class="clearfix">
+                                    <div  class="chanpterTitle">
+                                        <div  class="ell name"><span
+                                                                                       class="nameNum">
+              07
+            </span>
+                                            java项目实战
+                                        </div>
+                                        <span  class="living">
+            05.26 20:00
+          </span></div> <!----></li>
+                                <li  class="clearfix">
+                                    <div  class="chanpterTitle">
+                                        <div  class="ell name"><span
+                                                                                       class="nameNum">
+              08
+            </span>
+                                            java项目实战
+                                        </div>
+                                        <span  class="living">
+            05.27 20:00
+          </span></div> <!----></li>
+                            </ul>
+                        </div> <!----></div>
+                </div>
+                <div  class="cate-right">
+                    <div >已完结103节课程</div>
+                </div>
+            </div>
+        </div>
+        <div  id="recommend">
+            <div  class="content" >
+                <div  class="box-hd"><p  class="title">课程推荐</p></div>
+                <div  class="recommendContent" >
+                    <div   class="course course-inline">
+                        <div  class="cover"><img
+                                                                   data-src="https://res.shiguangkey.com/file/201807/20/20180720164840410880578.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                                                   src="https://res.shiguangkey.com/file/201807/20/20180720164840410880578.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                                                   lazy="loaded"> <span
+                                                                                        class="status">待更新</span>
+                            <!----></div>
+                        <div  class="detail"><span  class="title ell"><!---->Java纯小白入门</span>
+                            <div  class="others"><p  class="price free">免费</p>
+                                <p  class="num"><span
+                                                                        class="recommend-teacher">主讲老师：ITSTAR-蓝桥老师</span>
+                                </p></div>
+                        </div>
+                    </div>
+                    <div   class="course course-inline">
+                        <div  class="cover"><img
+                                                                   data-src="https://res.shiguangkey.com/file/201904/07/20190407211658998686023.png?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                                                   src="https://res.shiguangkey.com/file/201904/07/20190407211658998686023.png?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                                                   lazy="loaded"> <span
+                                                                                        class="status video">视频</span>
+                            <!----></div>
+                        <div  class="detail"><span  class="title ell"><!---->【1元好课】javavip框架班试听课</span>
+                            <div  class="others"><p  class="price">￥1</p>
+                                <p  class="num"><span
+                                                                        class="recommend-teacher">主讲老师：java官方助学安安老师</span>
+                                </p></div>
+                        </div>
+                    </div>
+                    <div   class="course course-inline">
+                        <div  class="cover"><img
+                                                                   data-src="https://res.shiguangkey.com/file/201904/07/20190407205255212041316.png?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                                                   src="https://res.shiguangkey.com/file/201904/07/20190407205255212041316.png?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                                                                   lazy="loaded"> <span
+                                                                                        class="status video">视频</span>
+                            <!----></div>
+                        <div  class="detail"><span  class="title ell"><!---->【1元好课】java基础班试听课</span>
+                            <div  class="others"><p  class="price">￥1</p>
+                                <p  class="num"><span
+                                                                        class="recommend-teacher">主讲老师：java官方助学安安老师</span>
+                                </p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="buttons">
+            <div  class="dis-inquiry"  courseid="1300"
+                 coursename="Java零基础到项目实战"
+                 cover="https://res.shiguangkey.com/file/201804/28/20180428192613701348981.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
+                 coursetype="5311" teachingmethod="8010"
+                 coursedetail="<div class=&quot;media-wrap image-wrap&quot;><img src=&quot;https://res.shiguangkey.com/file/201903/15/20190315175820281595274.jpg&quot;/></div>"
+                 applynum="60197" cateid="279" catename="Java" price="0" livestatus="6102" livechaptername=""
+                 classid="940" period="1" nextstarttime="1558612800000" teachername="Java学院高级讲师丹丹老师"
+                 icon="https://res.shiguangkey.com/file/201812/01/20181201171818812180056.jpg" desc="学习无忧,就上潭州，我是丹丹老师！"
+                 teacheruid="2329803" coursestatus="1410" wechat="TZ012725"
+                 publicaccountlink="http://urls.shiguangkey.com/IJ" auditions="" discountinfo="[object Object]"
+                 sharecover="https://res.shiguangkey.com/file/201804/28/20180428192613701348981.jpg"
+                 coursenextstarttime="2019/05/23 20:00"><span  class="footer-left"><img
+
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAANlBMVEVHcEwvOEIvOEIwOUMvOEIcJyovOEIvOUMvOEIvOUIvOUMuOEIvOEItN0EuOEIvOEIlND4wOUNzhEETAAAAEXRSTlMAa4/8owR897ze7TZWHUXRDdph/d4AAAF8SURBVEjHlZVZlsQgCEUdUeO8/802mEqqqwujzVdOvEHkvaAQX5Gl8rV6A8WKVdjk+x2Hys90qf0jnGoPqdUJVaOU8sd4DnFGt1FHgFcFthhNG6QH2snf54v0SvO8YbYe5TmuHol5QuZe9/B93uywcVzfKL9iS2GLtNhbl5nknm9BZNIDvpt1GNtz/PED7lhneiRMVT57joLAVGz3WY0tdHwD7AcAEHDrtz1LuBzF4ddaKG8hNvDe5cg9nB1CmOO4OOyJ+S1ievjKzXBHx5PYjGBHl84jPuKnMonEf2mwwC3WY0To2ogdnBIHguQeLulJ/wfXWMwl8ApXVIy/vbXCA1lc3r/FAk9D14b9OeIaj8S10zLaG0NDhcc1Lnp9mcbsWuzUx4LewR1cjs9g/Aj2T/U0yipksRlxNlPEbBq6tk1nfZ1yK/zDCGJH7Wy+cdePY0bkNJLrt8OX0cZlpTZhOHbpksBTHV3DbvfGnRnFPl6T3dXm8LAvTuPT/gDlWR2pwiWIWQAAAABJRU5ErkJggg==">咨询</span>
+                <div  style="display: none;">
+                    <div  class="app-contact-bg"></div>
+                    <div  class="dis-inquirymain"><p  class="title">一对一交流</p>
+                        <p ><span ><i ><img
+                                                                                                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo0YWFkMzg3MS0zZTdmLTViNDQtODQxOC1mNzNkZmMwY2IzZDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MjdFNUY0ODM5RjQzMTFFNzg4QzlCNkEyNTBDN0FCNEYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MjdFNUY0ODI5RjQzMTFFNzg4QzlCNkEyNTBDN0FCNEYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6ZTAzYjkxMGYtMGExMC01ZjQyLTkwYmEtYzVjMGI5YjM2ZTZiIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjRhYWQzODcxLTNlN2YtNWI0NC04NDE4LWY3M2RmYzBjYjNkNiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqWx/7IAAAUXSURBVHjazJh5bFRVFMZfp0OrLC4oSnFBowaJglu0irtSFUVj1JQaauAPAkQJRYliANcEoogbqJga4xIpKipBcK3RqDEWohJFDVCLCKhUpUBpi9DW8TvJb8zNy8y8+yZT4km+vO2++7537j3nfPcWtY88J8jDjheu5NiXe11CivMiIcl5q9AkvCP8Hu6od/2qnB9KxiR2jTBaKBWahe+Fb4WNQluo7aH8wBnCUOFC2tQJX/h+0JfgmcJs4W+hno/sjXhnB/iG64OF8cJtYKawqRAE7xeuEF4Qngvyt13Ck5zPEJYKLwsLc71UlGMO2jAuFv4RJgo7g8LaScICYbPm4aRsjRJZ7ttwfCisFSp7gJxZozDKTjoqypfGIWj3XhPeFh4Ietjw3m8i+aIvwUWCxf6jwX4ykayx6SaS90QRnCAcIdxXwO+XCYd5tLMIrxDJkdkIDhSqSQFxzILpMaE2Q4b4VPiauWw584IcXrQkf5cwXSSLMxG8Q1hh8yEGuQeF3UR5c+hZgzCM5H4j+fBz4docJBsInsnhPHgMmO1J7EC8cgI5bV7o+aXCWVSTdAb4UviT4DOv78vS9+PCXHmxVoQ70x6sZgj2eZDr53z0cIfcDcIIZzS+y5CepnO8NYcXf9ZhG17/b4iPE5Z5em+rsF44UdhOvTUyb9KP2RAyQVo4FDvvmydviviGTYVz0wRPFzqFHz3ImSI5QBjO9XUIhZ1MkTruW5sOzo8Wejl9NBGQucyKRKmGuY8RLM8kgzJYhXA1JSqgPi8nUC7CsyU8syG6hPNUSFj0wqu58mIbwTfCCA7wiNwS/sqy/WY04AfU0nTOfIpnZlOE02i/29GJZoOEFg+H/GVTJkFEbYloPIDwn8r1WwxrDddLyJ+3c72ajDBWeDXU18nCGg+CJtX6J5nAuyIa/8pc7aDS2HBf7HirimBx9d0cgmZCSITYz670JHhkgkDpimjcgh4M8Iylo8/44EIqwKYMZdTI3encq+b4ngdBWyoUJ9F7JRGNXxF+4vxs4V1HaVv0P5LhnbQ6me/cm0kK6fQgaMGUMoLdwkERjac651XOlLCPneJMfrvfznDf4ngsoOwNIhP4mI1OKsE6oyxG/f3FqRBdpJMm5mkbgfMViXqx854F1joWWT5mCqg1QX0cGORnTwufQHAciuYJYY9wvtNuDJVndIy+jeDWBGWqLA9y86mpo0jatgAydXws1aObdn1INc/wI3EIrk6Qs/rSsa8Np/AbsfdDz8I5dR3D760zVeJMdCRVUbYkiGIb5utjEJzF0NZHtGvAm8Nijs5VwgZXzSxBv/nanojc2Y8PWJ0fTNL19V5vdGadS3AtNbPKs5+7hcsRCmGrIcla3/2d+uxrNq/Xa3ibwzsLC0i4yzy2NbYhTj9GWK5BPZfjvblMg1gm7x2FMhqXaU2ygU2dOZ79rUJRr6S+Wj69lwQ7K8+09bBFvLy3I9vezDzG3nYTXvecizMKsTaV9ywrbBe5uqjNo2kEjQmEj/bHwl3kxpPYK312t/5g2fc8q7cVPUxuEilurLzX5bt51MhKf7IjQnvCHmKJOkbkWuLsbgUshiqR7lb0Ty0gscsQDyUiViW05ruB2Y4nJxKhltNeIm/mY+chww6hn+WF2gKupcNpDLn98Q+UskZSTCYznTmUKjUE4WBS7FnfP4qzib6XPBUgOm2NcjMlrxuSnc6GUilKvRv9+AYCN5YVpVKp4P9s/wowAPe5Uus02vbaAAAAAElFTkSuQmCC"
+                                                                                                  alt=""></i> <span
+                                >拨打电话 : 15675186919</span> <s ><img
+
+                                src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3LjAwMiAxMi4wMiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2Q2ZDZkNjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggaWQ9ImppbnJ1IiBjbGFzcz0iY2xzLTEiIGQ9Ik0uMjg5LDExLjczMmEuOTgzLjk4MywwLDAsMSwwLTEuMzkyTDQuNjIyLDYuMDEuMjg5LDEuNjgxQS45ODUuOTg1LDAsMCwxLDEuNjgzLjI4OUw2LjcxNCw1LjMxNGEuOTg0Ljk4NCwwLDAsMSwwLDEuMzkzTDEuNjgzLDExLjczMmEuOTg2Ljk4NiwwLDAsMS0xLjM5NCwwWiIvPgo8L3N2Zz4K"
+                                alt=""></s></span></p>
+                        <p  class="no"><span
+                                                               href="http://wpa.qq.com/msgrd?v=3&amp;site=qq&amp;m&amp;uin=952762314"><i
+                                ><img
+                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkI4RjRGQTQ2OUY0MjExRTc4MDAyQjg1RkY3RDYzMkRDIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkI4RjRGQTQ3OUY0MjExRTc4MDAyQjg1RkY3RDYzMkRDIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QjhGNEZBNDQ5RjQyMTFFNzgwMDJCODVGRjdENjMyREMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QjhGNEZBNDU5RjQyMTFFNzgwMDJCODVGRjdENjMyREMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4/oYiMAAAEo0lEQVR42ryZd2xNURzHby9arRrFQwSJUrP2SOykNEZI1IiUIEYiMULSBpH4A7GFCBLESKyaNSKCRtPa1KxVs8SKvXervj++j+el755z7lO/5JMn7Xn3fvs75zfOT0jTpPeWC6sAEkArUBXYoBjI4++Lg3zwHTwCWWAneOH/oPMLSjm+qLihsM5gJPDwZdfAQXAWPAcfuS4CVAQtQCMQDxLBU7ACZOi+UFdgLFgMIsFesAHkOqx/T+6CHfxZTTAEzANvwFhwXfViW0PcXIqSbWoDZijEBTL5zjTQFlyk52eovhTicAZDwGEgh6QfuGP9W6sDtsu24xx2MfVgWf7FD0DzIhAndgM0lu1ulvzhJiipKzAU5HBbE60iNnivLz6OMuC0BB5jlI21/pNB5DB8XIYX01UC54DSQXguHFTmETEV2QsftSFySqA0I/lqPIg2fLaknkmgIQMqn0lbou8+WM4jo2NxIBsiUyA419+DKxn2jw3E9QRXQHWwDUxgIh8N1oMwVpDZml68hY9l/KP+8mBXEAVmGYjrBnYDOeS7Cvn9bf48mjm0DBij8dyJksDhxdYQfNrrwSSwzkBcFD3UPYA4X5MUVQUM4nqVFwvwsYdCf26xFPtyYKmBQAmmNFYDHfvGKpKkuV7Kag14MdJmxD4EbzW/HMaAmm4YTKuYYz0aXrzP5qOvzZYpy+BFjdhW5RgKfAc+gdaa67NBB5s5y0RgR3YjbuwaI1/HLoi3bZ7DqwYvac8y6MaWgPrMnSqTHSphs+t9bvCSdqydbitNKJO4yuQc2jYz/zfNF0jkHge3XAp8xRQVp7FWgjZfBBZoNq6LWDHkLvLFpUDJFvPZBKtMdrbAewbDFYulzvZnbxisreHdpYdiXYR3iy1meieTGnvA51IUrGWCoYo1Vb2VRFxZT7G4GhOth1fOYO0IOx8nE015Nq+PzTUOdyyvjWOCEJbAQKvA4HQy0fRCBJ4CzRSLTzNIVrLgh7sUmMg0tRpsUqwVTSdE4FaeQaetW84EOwqkgHsuGtsNPPiCdM9bAipL/lCZnflW7xbL1o1zePhnJk65ilbiS2IMBUpea8Lan65YK539YzQNr71RvBAM0HjJcK6LZFQXZoG6Femye/OuXVHxnj6cQPzuqDPoxamK276091/BFPaCT3nYwzgxGMRL12vpmjj6yGWmiOGafU6JHtsrXf0DeO+4/6VJztcZsJYX9sLsJOcrSRwMRfDlNnNkKqO0HccksSyjNmtwlpMDIC6a29u4sFtdDiP1EKjr4EWZZA3kv8vzBvfVrwUTz210EeVyNmfBe7cD3YunMmg2az7wJXgWRH/o6z25gOVC3EzVZKETe76l1n8yiFvDbY3TmQ/KmWnAEVkUD35RiktlM9KANzqtAeZbDhwzeeb6uZwJqmqtFIknEFbX7QCzE6MyXXc6oGGhzLuSR1MhLt5psc4IeDLL1GKmmb28tN8zFFYLDGYfKM1HPGeEVrACxS5bvwbo8tARbDqf8bJ1CZzjveaTT7Ppsf4M0eux1ktiT2Y10TLTKX8a8bBsSV1tyYGR/39D5PlcfvZzRPLK9Dz8EGAAYpkzEkQzd80AAAAASUVORK5CYII="
+                                                        alt=""></i> <span >QQ咨询 : 952762314</span> <s
+                                ><img
+                                                        src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3LjAwMiAxMi4wMiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogI2Q2ZDZkNjsKICAgICAgfQogICAgPC9zdHlsZT4KICA8L2RlZnM+CiAgPHBhdGggaWQ9ImppbnJ1IiBjbGFzcz0iY2xzLTEiIGQ9Ik0uMjg5LDExLjczMmEuOTgzLjk4MywwLDAsMSwwLTEuMzkyTDQuNjIyLDYuMDEuMjg5LDEuNjgxQS45ODUuOTg1LDAsMCwxLDEuNjgzLjI4OUw2LjcxNCw1LjMxNGEuOTg0Ljk4NCwwLDAsMSwwLDEuMzkzTDEuNjgzLDExLjczMmEuOTg2Ljk4NiwwLDAsMS0xLjM5NCwwWiIvPgo8L3N2Zz4K"
+                                                        alt=""></s></span></p> <!---->
+                        <div  class="t-space"></div>
+                        <p  class="dis-finish">完成</p></div>
+                </div>
+            </div>
+            <button  class="success" >预约学习</button>
+        </div>
+        <div  class="backBtn"><img
+                                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH4AAAB+CAMAAADV/VW6AAAAQlBMVEVHcEwsbOYucPAeTaYAAAEBBAkvcvIAAAAAAAIAAQQlXccsbekpZdkiWMEwc/T///96pvyRt/5akPlBf/bY5f21zfv79NNfAAAADnRSTlMAkMk3FBzpAgYMTqRuH90NcWIAAAUeSURBVGje7ZuNkqQqDIUHFVvUQdDu93/Vq6ACKiGAztat6jNVWzvTs/vlJDH4gz8/X3311VdfBfXy6w/Jzay/DGAFsLInXVFzpbroSF+yxyNYHbek4BcqSNs8GIBOdtvV3Ku6a61i3A7/JQB7jYD83h+Ahnccpc4EcF/NsfBF5M4AVM37mkeo7vceuAH+KgseqaLcAsi33vJ41e0NCVAzhvAkEZbJV9Z/C56o4jerAJpe82TVOXxFLzPoMz+9AdWoKXmmUvk3eM/If3bds/iKzgp+gwq28iPpDeG3iDSxfEVv+U1qI/mKfkfhTfkj+PoUMlD4Scqo8jdx+B6Gf4ZhEGh+H2E/nHoFj8Hv6cemngThwyDjuh/H1+bD8Bj3nGO7T9G9S7wFH4aP3CRGxOKPsg9WXgxeveV0w8Gnzfva/j1A+kAB9Cj7Gu9rewnihzdQg5oh7Gu6f9yOtv+30fYTwH+LsK/x0BWFeF91/jTqnnwDFz9hvKYzeNrvAYiLg2IEsh/kh3LvBnAcOwv/k5N9Rces8yqA49iZlpgm4NBnMH7NPeokR77PJAlmvwhlX+Or5IV9hBeCKoRX5tNPricYX8LZX3Pfp5/XwL3Xw9lf8eQpPEHhu6eS34XxjGWc3QsYP7c+VHxtnqWf4X7AA2+Ze4D9Vy5+Oe4GnotPrvwb7jzOMfjUqaMXgjELz5Lw0yTkG3HyW0G9h8R/oNMt+J+yHf/y4+HWk+n0ugLwW+cF8CLpTM/GNzC+CF/dncjvj5jCV5oofPrQDd3qRuHJU3iCwvdP4XsUvnwKX0L4/cCjT+Ep6rivimfoRVWh8OSpzgsOXcVvn8G3Cz684FbUM/embbRM0zSOQor17478M49WqPW+8g4eIUf1p7qhIUaFkgcBQwfG/+x4b/YVXwjboxxt76OEcw/it97zrzrLTRz3Ro50vvPj6wruPHO6E+j9Oe2rYvB9BXeeXXwKLbpzzynpOutyaEF4Gsq9hb+2vxieTPKFMPjlIyEBPKmCeNN713N/aflxASrwpO+kyb0bRghf2nj4+h6ovsZPcp4A2jwSjzFv4z0PkWbY4no+sxXrbUQdUAA/jxwE3sq+Z9WfQZqwzjyk+54GD7uDfVp48Gvh5XrEKfx8LEgV0DW+wJl38Jfpn2ELby7+TNqPezMHLvF1icQ7/P4SP84115nXKwBi7PRYuo2vaHc1caZx861LHsZ3Cx2Hd+yfyi+WQ35ueHtVlfsI3kbPqfCueSz+VP5xazNhpiyX9vfivODqwiPNH+y7/EmfXywm168lI9P5V1x6hHmD1/w281li3W507KM8J/2Z/JWON789SNvs05xH+EvmTepjHuSx3X+ZvnXE0GOeorrppzTxkrfT8KjUO+nfAugTClD3lNqFxz9Cdsqv/KdsmjLwnR71AJ9Z/mnsljFKXXzU9oXXof2WBER0QFfa8Gi6zbcCIKgM1KTcrVdpdMc/2/iYAGpCXfhOT9i4YwqwRRDaKkrpyXrGtiWTALry5wi8G2UpvbCesWmrsRug2gOYQzhuE27NZ/fQD3zm8r2qDDyPvvNNB4YjUGxjPXO/pp2AlV+FnJ+s523WbEwAWwSVP+sW/I69si9PACoI9WW0sW+D2wnYAtjbwNXO1vDmzm3KhwB0DCoOZoN39v27tNf/t7EjOOkJ+DGAhl1p/7R55A2BlxOBikLH0TD7h8++n3CI4KCn3w95+UP425dT/smLMf/+taCvvvrqq/+z/gOwFa8T5tNOWAAAAABJRU5ErkJggg==">
+        </div> <!----></div> <!----> <!----></div>
+<script>
+    $(".backBtn").tap(function () {
+        $(".van-toast").css("display", "-webkit-box");
+        $(".van-overlay").css("display", "-webkit-box");
+        window.history.back(-1);
+    })
+</script>
+<div class="van-toast van-toast--default van-toast--middle" style="z-index: 2003; display: none;width: 130px">
+    <div class="van-loading van-loading--spinner van-loading--white" style="color: white;">
+        <span class="van-loading__spinner van-loading__spinner--spinner">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+    </div>
+    <div class="van-toast__text">加载中</div>
+</div>
+
+<div class="van-overlay" style="z-index: 2000;display: none;"></div>
+
+<script>
+    $(".footer-left").tap(function () {
+        $(this).next().show();
+    })
+    $(".dis-finish").tap(function () {
+        $(".footer-left").next().hide();
+    })
+</script>
+</body>
+</html>

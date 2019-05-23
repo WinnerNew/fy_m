@@ -11,6 +11,7 @@
     <script type="text/javascript" src="assets/zepto.min.js"></script>
     <script type="text/javascript" src="assets/touch.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
+
     <script type="text/javascript">
         (function (win) {
             var remCalc = {};
@@ -447,6 +448,14 @@
 
 </div>
 
+<script>
+    // var width = window.document.documentElement.getBoundingClientRect().width;
+    // var rem = width / 10;
+    // var w = window.document.documentElement.style.fontSize = rem *5+ "px";
+    //     document.documentElement.clientWidth / 7.5 + 'px';
+    // $(".van-swipe__track").width($(".van-swipe__track").width()/10+"px");
+    
+</script>
 
 <!--<script>var _hmt = _hmt || [];-->
 <!--(function() {-->
@@ -460,7 +469,7 @@
 <!--<script type="text/javascript" src="https://www-cdn-res.shiguangkey.com/static/js/manifest.b824df6d86257c1c1334.js"></script>-->
 <!--<script type="text/javascript" src="https://www-cdn-res.shiguangkey.com/static/js/vendor.fb23c5e45e3b3216269b.js"></script>-->
 <!--<script type="text/javascript" src="https://www-cdn-res.shiguangkey.com/static/js/app.e128377d860c3f85f9f6.js"></script>-->
-
+<!--<script type="text/javascript" src="https://hm.baidu.com/hm.js?1f0848fcf2f2246768526dbb2cccace9"></script>-->
 <div class="van-toast van-toast--default van-toast--middle" style="z-index: 2003; display: none;width: 130px">
     <div class="van-loading van-loading--spinner van-loading--white" style="color: white;">
         <span class="van-loading__spinner van-loading__spinner--spinner">
@@ -476,22 +485,24 @@
     //轮播图
     //  　document.documentElement.style.fontSize = document.documentElement.clientWidth / 640*100 + 'px';
     // $(".van-swipe__track").width() =　document.documentElement.clientWidth / 640*100 + 'px';
-    $(function(){
+    // $(function(){
     // var a = 　 window.innerWidth / 100 + 'px'
     //     $(".van-swipe__track").width(a);
 //获得屏幕大小
-        let htmlwidth = document.documentElement.clientWidth || document.body.clientWidth;  //浏览器兼容
+//         let htmlwidth = document.documentElement.clientWidth || document.body.clientWidth;  //浏览器兼容
         // console.log("屏幕宽度："+htmlwidth) //iphone5:320 iphone6:375
 
 //获得html DOM元素
-        let htmlDom = document.getElementsByTagName('html')[0];
+//         let htmlDom = document.getElementsByTagName('html')[0];
 
 //给DOM元素设置样式
 //         htmlDom.style.fontSize = htmlwidth/20 + 'px';
-        $(".van-swipe__track").width = htmlwidth/20 + 'px';
+//         $(".van-swipe__track").width = htmlwidth/20 + 'px';
 //以iphone5为基础 iphone5默认字体大小为16px 320/16=20 即1rem字体大小是屏幕宽度的1/20
 
-    })
+    // })
+
+
     //返回顶部
     var timer,isTop = true;
     document.querySelector('.to-top').onclick = function(){
@@ -522,6 +533,11 @@
             that.style.display='none'
         }
     }
+
+    //轮播图
+
+
+
     //跳转搜索
     $('.search').tap(function(){
         // $(".van-toast").css("display","-webkit-box");
@@ -556,6 +572,9 @@
             $(this).removeClass("active");
         })
         $(this).addClass("active");
+    })
+    $(".course").tap(function () {
+        self.location='course.html';
     })
 </script>
 </body>

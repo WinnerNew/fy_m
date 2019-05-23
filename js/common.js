@@ -16,3 +16,8 @@ $('.tz-nav-bottom > div:nth-child(3)').tap(function(){
     $(".van-overlay").css("display","-webkit-box");
     self.location='login.html';
 })
+$(".backBtn").tap(function () {
+    $(".van-toast").css("display", "-webkit-box");
+    $(".van-overlay").css("display", "-webkit-box");
+    window.history.back(-1);
+})

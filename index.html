@@ -490,8 +490,17 @@
         }
         $(".van-swipe__track").css("width", w * 5);
         $(".van-swipe-item").css("width", w);
-        $(".van-swipe__track").css("")
+        $(".van-swipe__track").css("transform","translateX("+-w+"px)");
         console.log(w);
+    });
+    $(document).ready(function(){
+        var w = document.documentElement.clientWidth || document.body.clientWidth;
+        if (w > 750) {
+            w = 750;
+        }
+        $(".van-swipe__track").css("width", w * 5);
+        $(".van-swipe-item").css("width", w);
+        $(".van-swipe__track").css("transform","translateX("+-w+"px)");
     });
 
 

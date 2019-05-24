@@ -318,6 +318,12 @@
     //     })
     //     $(this).addClass("active");
     // })
+    $(".cateCourse .course-inline").tap(function () {
+        $(".van-toast").css("display","-webkit-box");
+        $(".van-overlay").css("display","-webkit-box");
+        console.log("a")
+        self.location='course.html';
+    })
 
     $(".goBack").tap(function () {
         $(".van-toast").css("display","-webkit-box");

@@ -167,6 +167,30 @@
     //     }
     // }
     // textT();
+    // $(".input-wapper input").change(function () {
+    //     $(".history-wapper").hide();
+    // })
+    $('.input-wapper input').on('input', function(e) {
+        //实时监听手机号码输入框变化
+        if($('.input-wapper input').val()) {
+            //输入框内容不为空
+
+            $(".input-wapper div:nth-child(3)").show();
+            $(".history-wapper").show();
+            $(".content .history-wapper:last-child").hide();
+        }else{
+            //输入框内容为空
+            $(".input-wapper div:nth-child(3)").hide();
+            $(".history-wapper").hide();
+            $(".content .history-wapper:last-child").show();
+        }
+    })
+    $(".content .input-wapper:first-child div:last-child").tap(function () {
+        $(".input-wapper div:nth-child(3)").hide();
+        $(".history-wapper").hide();
+        $(".content .history-wapper:last-child").show();
+        $('.input-wapper input').val("");
+    })
 
 </script>
 </body>

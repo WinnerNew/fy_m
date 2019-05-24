@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/index.css">
     <script type="text/javascript" src="assets/zepto.min.js"></script>
+    <script type="text/javascript" src="assets/fx.js"></script>
     <script type="text/javascript" src="assets/touch.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
 
@@ -157,11 +158,11 @@
                     </div>
                 </div>
                 <div class="van-swipe__indicators">
+                    <i class="van-swipe__indicator van-swipe__indicator--active" style=""></i>
                     <i class="van-swipe__indicator" style=""></i>
                     <i class="van-swipe__indicator" style=""></i>
                     <i class="van-swipe__indicator" style=""></i>
-                    <i class="van-swipe__indicator" style=""></i>
-                    <i class="van-swipe__indicator van-swipe__indicator--active"
+                    <i class="van-swipe__indicator"
                        style="background-color: rgb(255, 255, 255);"></i></div>
             </div>
         </div>
@@ -449,11 +450,7 @@
 </div>
 
 <script>
-    // var width = window.document.documentElement.getBoundingClientRect().width;
-    // var rem = width / 10;
-    // var w = window.document.documentElement.style.fontSize = rem *5+ "px";
-    //     document.documentElement.clientWidth / 7.5 + 'px';
-    // $(".van-swipe__track").width($(".van-swipe__track").width()/10+"px");
+
 
 </script>
 
@@ -467,9 +464,9 @@
 <!--    s.parentNode.insertBefore(hm, s);-->
 <!--})();</script>-->
 <!--<script type="text/javascript" src="https://www-cdn-res.shiguangkey.com/static/js/manifest.b824df6d86257c1c1334.js"></script>-->
-<!--<script type="text/javascript" src="https://www-cdn-res.shiguangkey.com/static/js/vendor.fb23c5e45e3b3216269b.js"></script>-->
+<!--<script type="text/javascript" src="js/vendor.js"></script>-->
 <!--<script type="text/javascript" src="https://www-cdn-res.shiguangkey.com/static/js/app.e128377d860c3f85f9f6.js"></script>-->
-<!--<script type="text/javascript" src="https://hm.baidu.com/hm.js?1f0848fcf2f2246768526dbb2cccace9"></script>-->
+<script type="text/javascript" src="https://hm.baidu.com/hm.js?1f0848fcf2f2246768526dbb2cccace9"></script>
 <div class="van-toast van-toast--default van-toast--middle" style="z-index: 2003; display: none;width: 130px">
     <div class="van-loading van-loading--spinner van-loading--white" style="color: white;">
         <span class="van-loading__spinner van-loading__spinner--spinner">
@@ -482,28 +479,57 @@
 <div class="van-overlay" style="z-index: 2000;display: none;"></div>
 
 <script>
-    //轮播图
+    var index = 1;
+    var w = document.documentElement.clientWidth || document.body.clientWidth;
+    // 轮播图
     $(window).resize(function () {
+        var index = 1;
         var w = document.documentElement.clientWidth || document.body.clientWidth;
         if (w > 750) {
             w = 750;
         }
         $(".van-swipe__track").css("width", w * 5);
         $(".van-swipe-item").css("width", w);
-        $(".van-swipe__track").css("transform","translateX("+-w+"px)");
-        console.log(w);
+        $(".van-swipe__track").css("transform","translateX("+-0+"px)");
+
     });
     $(document).ready(function(){
+        var index = 1;
         var w = document.documentElement.clientWidth || document.body.clientWidth;
         if (w > 750) {
             w = 750;
         }
         $(".van-swipe__track").css("width", w * 5);
         $(".van-swipe-item").css("width", w);
-        $(".van-swipe__track").css("transform","translateX("+-w+"px)");
+
+
+
+        $(".van-swipe__track").css("transform","translateX("+-0+"px)");
+        // $(".van-swipe__track").css("transform","translateX("+-w*index+"px)");
     });
 
-
+    // 轮播图
+    $(document).ready(function () {
+        var banner_width = $(".van-swipe__track").width();
+        // var banner_height = $('.van-swipe__track').height()*-1;
+        var banner = $(".van-swipe-item");
+        var li_width = $(".van-swipe-item").width();
+        for (var i = 0;i<banner.lenght;i++){
+            var offest = i*li_width*-1;
+            $(banner[i]).css("transform","translateX("+offest+"px)");
+            console.log(banner_width);
+        }
+        var j = 0;
+        window.setInterval(function () {
+            if(j==5){
+                j = 0;
+                $(".van-swipe__track").css("transition","0");
+            }
+            $(".van-swipe__track").css("transform","translateX("+li_width*-j+"px)")
+            console.log("1");
+            j++;
+        },2000)
+    })
     //返回顶部
     var timer, isTop = true;
     document.querySelector('.to-top').onclick = function () {
@@ -538,6 +564,7 @@
     }
 
     //轮播图
+    //banner轮播图
 
 
     //跳转搜索
@@ -575,8 +602,12 @@
         })
         $(this).addClass("active");
     })
-    $(".course").tap(function () {
+    //进入详情
+    $(".courses .course").tap(function () {
+        $(".van-toast").css("display", "-webkit-box");
+        $(".van-overlay").css("display", "-webkit-box");
         self.location = 'course.html';
+        console.log("a")
     })
 </script>
 </body>

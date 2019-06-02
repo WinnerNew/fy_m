@@ -490,10 +490,10 @@
         }
         $(".van-swipe__track").css("width", w * 5);
         $(".van-swipe-item").css("width", w);
-        $(".van-swipe__track").css("transform","translateX("+-0+"px)");
+        $(".van-swipe__track").css("transform", "translateX(" + -0 + "px)");
 
     });
-    $(document).ready(function(){
+    $(document).ready(function () {
         var index = 1;
         var w = document.documentElement.clientWidth || document.body.clientWidth;
         if (w > 750) {
@@ -503,8 +503,7 @@
         $(".van-swipe-item").css("width", w);
 
 
-
-        $(".van-swipe__track").css("transform","translateX("+-0+"px)");
+        $(".van-swipe__track").css("transform", "translateX(" + -0 + "px)");
         // $(".van-swipe__track").css("transform","translateX("+-w*index+"px)");
     });
 
@@ -514,21 +513,21 @@
         // var banner_height = $('.van-swipe__track').height()*-1;
         var banner = $(".van-swipe-item");
         var li_width = $(".van-swipe-item").width();
-        for (var i = 0;i<banner.lenght;i++){
-            var offest = i*li_width*-1;
-            $(banner[i]).css("transform","translateX("+offest+"px)");
+        for (var i = 0; i < banner.lenght; i++) {
+            var offest = i * li_width * -1;
+            $(banner[i]).css("transform", "translateX(" + offest + "px)");
             console.log(banner_width);
         }
         var j = 0;
         window.setInterval(function () {
-            if(j==5){
+            if (j == 5) {
                 j = 0;
-                $(".van-swipe__track").css("transition","0");
+                $(".van-swipe__track").css("transition", "0");
             }
-            $(".van-swipe__track").css("transform","translateX("+li_width*-j+"px)")
+            $(".van-swipe__track").css("transform", "translateX(" + li_width * -j + "px)")
             console.log("1");
             j++;
-        },2000)
+        }, 2000)
     })
     //返回顶部
     var timer, isTop = true;

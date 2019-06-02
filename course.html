@@ -12,6 +12,9 @@
     <script type="text/javascript" src="assets/zepto.min.js"></script>
     <script type="text/javascript" src="assets/touch.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video-js.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.3.0/video.min.js"></script>
+
     <script type="text/javascript">
         (function (win) {
             var remCalc = {};
@@ -110,6 +113,11 @@
 <body>
 <div id="app">
     <div  class="wrapper isH5">
+        <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="750" height="auto"
+               poster="http://vjs.zencdn.net/v/oceans.png">
+            <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+        </video>
+
         <div  class="cover" ><img
                                                                                          src="https://res.shiguangkey.com/file/201804/28/20180428192613701348981.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
                                                                                          alt="课程封面">
@@ -365,6 +373,29 @@
     $(".dis-finish").tap(function () {
         $(".footer-left").next().hide();
     })
+    Zepto(function($){
+        // $("#example_video_1").hide();
+    })
+    $(".cover").tap(function () {
+        $(this).hide();
+        $("#example_video_1").show();
+    })
+
+    var player = videojs('example_video_1',{
+        muted: false,
+        controls : true,
+        aspectRatio:"16:9",
+        playbackRates:[1,0.5,2],
+        height:450,
+        width:750,
+        loop : true,
+        poster:"https://imgcdn.toutiaoyule.com/img/20190602/23ed905e0dd95fc5c541cca62f86de37.jpg",
+        preload:"metadata",
+        nativeControlsForTouch:true,
+        // controls:false
+        // 更多配置.....
+    });
+
 </script>
 </body>
 </html>

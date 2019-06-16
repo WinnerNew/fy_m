@@ -125,14 +125,14 @@
             <div class="menu-wapper" style="display: none">
                 <div class="top">
                     <div class="menu">
-                        <div class="column">
+                        <div class="column" id="t1">
                             <div><label class="active">IT互联网</label></div>
                             <div><label class="">实用外语</label></div>
                             <div><label class="">设计创作</label></div>
                             <div><label class="">兴趣艺术</label></div>
                             <div><label class="">农业生产</label></div>
                         </div>
-                        <div class="column center">
+                        <div class="column center" id="t2">
                             <div><label class="active">全部</label></div>
                             <div><label class="">编程语言</label></div>
                             <div><label class="">互联网运营</label></div>
@@ -316,20 +316,9 @@
         $(this).addClass("active");
     })
 
-    $(".column label").tap(function () {
-        $(".column label").each(function () {
-            $(this).removeClass("active");
-        })
-        $(this).addClass("active");
-    })
 
-    // $(".center,column label").tap(function () {
-    //     $(".center,.column  label").each(function () {
-    //         $(this).removeClass("active");
-    //     })
-    //     $(this).addClass("active");
-    // })
-    $(".cateCourse .course-inline").tap(function () {
+
+        $(".cateCourse .course-inline").tap(function () {
         $(".van-toast").css("display","-webkit-box");
         $(".van-overlay").css("display","-webkit-box");
         console.log("a")
@@ -358,9 +347,12 @@
         if($(".menu-wapper").css("display") == "none"){
             $("html, body").css("overflow","hidden");
             $(".menu-wapper").css("display","flex");
+            // $(".center").hide();
+            // $(".center:nth-child(1)").show();
         }else {
             $("html, body").css("overflow","hidden");
             $(".menu-wapper").css("display","none");
+
         }
     })
     $(".mask").tap(function () {
@@ -371,6 +363,25 @@
         $("html, body").css("overflow","initial");
         $(".menu-wapper").css("display","none");
     });
+    // $(".menu>.column").tap(function () {
+    //
+    Zepto(function($){
+        // $(".center").hide();
+        $(".menu .center:first-child").hide()
+    })
+    $("#t1 label").each(function () {
+        $(this).tap(function () {
+            $("#t1 label").removeClass("active");
+            $(this).addClass("active");
+
+        })
+    })
+    $("#t2 label").each(function () {
+        $(this).tap(function () {
+            $("#t2 label").removeClass("active");
+            $(this).addClass("active");
+        })
+    })
     //返回顶部
     //返回顶部
     var timer,isTop = true;

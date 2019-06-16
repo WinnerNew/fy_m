@@ -35,7 +35,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="23" />
-          <entry key="HTML" value="978" />
+          <entry key="HTML" value="980" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -109,8 +109,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/course.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1967">
-              <caret line="123" column="31" lean-forward="true" selection-start-line="123" selection-start-column="31" selection-end-line="123" selection-end-column="31" />
+            <state relative-caret-position="1155">
+              <caret line="464" column="33" selection-start-line="464" selection-start-column="33" selection-end-line="464" selection-end-column="33" />
               <folding>
                 <element signature="n#src#0;n#img#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#src#0;n#img#0;n#button#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -207,11 +207,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>data-v-4501f459=&quot;&quot;</find>
-      <find>data-v-b3e47dec=&quot;&quot;</find>
-      <find>data-v-291a3495=&quot;&quot;</find>
-      <find>data-v-08800616=&quot;&quot;</find>
-      <find>data-v-6900f112=&quot;&quot;</find>
       <find>container</find>
       <find>detail</find>
       <find>.course&gt;.detail</find>
@@ -236,7 +231,12 @@
       <find>id=&quot;t2</find>
       <find>title</find>
       <find>wapper</find>
+      <find>HEAD</find>
+      <find>&lt;&lt;&lt;&lt;&lt;&lt;</find>
       <find>video</find>
+      <find>cover</find>
+      <find>my_video</find>
+      <find>video.js</find>
     </findStrings>
     <replaceStrings>
       <replace>12px</replace>
@@ -376,7 +376,7 @@
       <workItem from="1559448387612" duration="14198000" />
       <workItem from="1560346944587" duration="111000" />
       <workItem from="1560347527185" duration="2056000" />
-      <workItem from="1560659022784" duration="485000" />
+      <workItem from="1560659022784" duration="1385000" />
     </task>
     <task id="LOCAL-00001" summary="插件">
       <created>1558665072574</created>
@@ -396,14 +396,14 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112893000" />
+    <option name="totallyTimeSpent" value="113793000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24627976" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.13020833" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" weight="0.32897604" />
@@ -647,8 +647,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/course.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1967">
-          <caret line="123" column="31" lean-forward="true" selection-start-line="123" selection-start-column="31" selection-end-line="123" selection-end-column="31" />
+        <state relative-caret-position="1155">
+          <caret line="464" column="33" selection-start-line="464" selection-start-column="33" selection-end-line="464" selection-end-column="33" />
           <folding>
             <element signature="n#src#0;n#img#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#src#0;n#img#0;n#button#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />

@@ -98,8 +98,15 @@
             };
             win.remCalc = remCalc
         })(window);
-
-        // 考拉移动端全站使用rem的不是很多
+        function funcDemo(){
+      //每隔3秒执行一次countTime方法
+       window.setInterval(function(){
+          var a = player.currentTime();
+           $(".living").text("$(".living").text()+""+a");
+       },3000);
+       }
+window.onload = funcDemo;
+                // 考拉移动端全站使用rem的不是很多
         // 主要用100%布局 比如width、height、padding
         // 也有直接用px  字体大小使用px固定不变
         // 还有使用em的  基于font-size 定line-height

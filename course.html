@@ -99,8 +99,16 @@
             };
             win.remCalc = remCalc
         })(window);
-
-        // 考拉移动端全站使用rem的不是很多
+        function funcDemo(){
+      //每隔3秒执行一次countTime方法
+       window.setInterval(function(){
+          var a = player.currentTime();
+           $(".living").text("");
+           $(".living").text($(".living").text()+""+a);
+       },3000);
+       }
+window.onload = funcDemo;
+                // 考拉移动端全站使用rem的不是很多
         // 主要用100%布局 比如width、height、padding
         // 也有直接用px  字体大小使用px固定不变
         // 还有使用em的  基于font-size 定line-height
@@ -114,10 +122,17 @@
 <body>
 <div id="app">
     <div  class="wrapper isH5">
+<<<<<<< HEAD
         <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="750" height="auto" controlsList="nodownload"
                poster="http://vjs.zencdn.net/v/oceans.png">
             <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
         </video>
+=======
+        <video id="my_video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="640" height="264"
+                           poster="/public/uploads/image/course/20190323/6a9ea68c37e6dab408510ef9645faa18.png">
+                        <source src="https://edu.fanyedu.com/oa_2633f1627ad73e4acd12a0fa4ab6a24f.m3u8" type="application/x-mpegURL">
+                    </video>
+>>>>>>> 0409d81c6fab53075ced1293170b15a9748b433c
 
         <div  class="cover" ><img
                                                                                          src="https://res.shiguangkey.com/file/201804/28/20180428192613701348981.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
@@ -379,8 +394,9 @@
     })
     $(".cover").tap(function () {
         $(this).hide();
-        $("#example_video_1").show();
+        $("#my_video").show();
     })
+<<<<<<< HEAD
     $(".tz-scroll .tz-scroll-item:nth-child(2)").tap(function () {
         $("#introduce").hide();
         $("#courseContent").show();
@@ -403,18 +419,55 @@
         // $("")
     //
     var player = videojs('example_video_1',{
+=======
+
+      var player = videojs('my_video',{
+        //muted : true/false 是否静音
+>>>>>>> 0409d81c6fab53075ced1293170b15a9748b433c
         muted: false,
+        //controls : true/false 是否拥有控制条 【默认true】,如果设为false ,那么只能通过api进行控制了。也就是说界面上不会出现任何控制按钮
         controls : true,
+        //aspectRatio 将播放器置于流体模式，并在计算播放器的动态大小时使用该值。该值应表示比率 - 由冒号（例如"16:9"或"4:3"）分隔的两个数字
         aspectRatio:"16:9",
-        playbackRates:[1,0.5,2],
+        playbackRates:[0.5,0.75,1.25,1.5,1.75,2],
+//        设置视频播放器的显示高(宽度)度（以像素为单位）
         height:450,
         width:750,
-        loop : true,
-        poster:"https://imgcdn.toutiaoyule.com/img/20190602/23ed905e0dd95fc5c541cca62f86de37.jpg",
-        preload:"metadata",
+//      loop : true/false 视频播放结束后，是否循环播放
+        loop : false,
+//      poster: 播放前显示的视频画面，播放开始之后自动移除。通常传入一个URL
+        poster:"/public/uploads/image/course/20190323/6a9ea68c37e6dab408510ef9645faa18.png",
+//        preload:预加载
+//      ‘ auto‘ 自动 立即开始加载视频（如果浏览器支持）
+//       ’metadata‘ 元数据信息 ，比如视频长度，尺寸等
+//      ‘none‘ 不预加载任何数据，直到用户开始播放才开始下载
+        preload:"auto",
         nativeControlsForTouch:true,
+//      src  立即开始加载视频（如果浏览器支持）
+        src:"https://edu.fanyedu.com/oa_2633f1627ad73e4acd12a0fa4ab6a24f.m3u8",
+//        src:"http://vjs.zencdn.net/v/oceans.mp4",
+//      notSupportedMessage 允许覆盖Video.js无法播放媒体源时显示的默认消息。
+        notSupportedMessage:"此视频暂不可播放",
+//        nativeAudioTracks 可以设置为false禁用本机音轨支持。最常用于videojs-contrib-hls
+        nativeAudioTracks:true,
+        nativeVideoTracks:true,
         // controls:false
         // 更多配置.....
+//        plugins: {
+//            foo: {bar: true},
+//            boo: {baz: false}
+//        },
+        controlBar: {
+            playToggle: {
+                replay: true
+            }
+        },
+//        官网格式
+        bigPlayButton : true,
+        textTrackDisplay : false,
+        posterImage: false,
+        errorDisplay : false,
+
     });
 
 </script>

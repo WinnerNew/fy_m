@@ -659,9 +659,10 @@ button.success {
 button.success {
     background: #35bf10;
 }
-#example_video_1{
+#my_video{
     display:none;
 }
+<<<<<<< HEAD
 
 video::-internal-media-controls-download-button {
     display:none;
@@ -675,3 +676,5 @@ video::-webkit-media-controls-panel {
     width: calc(100% + 30px);
 
 }
+=======
+>>>>>>> 0409d81c6fab53075ced1293170b15a9748b433c

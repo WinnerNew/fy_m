@@ -391,7 +391,7 @@ window.onload = funcDemo;
         $(this).hide();
         $("#my_video").show();
     })
-
+    $('#my_video').bind('contextmenu',function() { return false; });
     $(".tz-scroll .tz-scroll-item:nth-child(2)").tap(function () {
         $("#introduce").hide();
         $("#courseContent").show();

@@ -122,17 +122,12 @@ window.onload = funcDemo;
 <body>
 <div id="app">
     <div  class="wrapper isH5">
-<<<<<<< HEAD
+
         <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="750" height="auto" controlsList="nodownload"
                poster="http://vjs.zencdn.net/v/oceans.png">
             <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
         </video>
-=======
-        <video id="my_video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="640" height="264"
-                           poster="/public/uploads/image/course/20190323/6a9ea68c37e6dab408510ef9645faa18.png">
-                        <source src="https://edu.fanyedu.com/oa_2633f1627ad73e4acd12a0fa4ab6a24f.m3u8" type="application/x-mpegURL">
-                    </video>
->>>>>>> 0409d81c6fab53075ced1293170b15a9748b433c
+
 
         <div  class="cover" ><img
                                                                                          src="https://res.shiguangkey.com/file/201804/28/20180428192613701348981.jpg?x-oss-process=image/resize,l_4096,quality,Q_50/format,webp"
@@ -394,9 +389,8 @@ window.onload = funcDemo;
     })
     $(".cover").tap(function () {
         $(this).hide();
-        $("#my_video").show();
+        $("#example_video_1").show();
     })
-<<<<<<< HEAD
     $(".tz-scroll .tz-scroll-item:nth-child(2)").tap(function () {
         $("#introduce").hide();
         $("#courseContent").show();
@@ -416,14 +410,11 @@ window.onload = funcDemo;
             console.log($(this).attr('data-src'));
         })
     })
-        // $("")
-    //
-    var player = videojs('example_video_1',{
-=======
 
-      var player = videojs('my_video',{
+
+
+      var player = videojs('example_video_1',{
         //muted : true/false 是否静音
->>>>>>> 0409d81c6fab53075ced1293170b15a9748b433c
         muted: false,
         //controls : true/false 是否拥有控制条 【默认true】,如果设为false ,那么只能通过api进行控制了。也就是说界面上不会出现任何控制按钮
         controls : true,

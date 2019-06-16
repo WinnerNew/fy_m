@@ -414,7 +414,7 @@ window.onload = funcDemo;
 
 
 
-    var player = videojs('my-video', {
+    var player = videojs('my_video', {
         //muted : true/false 是否静音
         muted: false,
         type: "application/x-mpegURL",
@@ -462,12 +462,14 @@ window.onload = funcDemo;
         posterImage: false,
         errorDisplay: false,
         controlBar: true
-    }, function onPlayerReady() {
-        this.load();
-        this.play();
+    },
+        // function onPlayerReady() {
+        // this.load();
+        // this.play();
 //        player.ready(function() {
 //                this.addClass('my-example');
-    });
+//     }
+    );
 
 
 </script>

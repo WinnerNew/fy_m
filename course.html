@@ -378,6 +378,10 @@ window.onload = funcDemo;
 <div class="van-overlay" style="z-index: 2000;display: none;"></div>
 <script type="text/javascript" src="assets/videojs-contrib-hls.js"></script>
 <script>
+     $(".share").tap(function () {
+        console.log(1);
+        window.open("https://connect.qq.com/widget/shareqq/index.html?url=http://zixuephp.net/article-309.html?sharesource=qzone&title=一键分享到QQ空间、QQ好友、新浪微博、微信代码&pics=http://zixuephp.net/uploads/image/20170810/1502335815192079.png&summary=通过各自平台的开发接口，进行参数指定，进行一键分享javascript代码功能&desc=php自学网，一个web开发交流的网站");
+    })
     $(".footer-left").tap(function () {
         $(this).next().show();
     })
